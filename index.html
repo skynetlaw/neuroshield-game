@@ -1,1245 +1,861 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0c211a">
-<title>Право на ментальную конфиденциальность — образовательная юридическая игра</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обучающий интерактивный материал для слушателей Летней школы МГИМО «Цифровая трансформация правового пространства ЕАЭС»
+ </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0c211a; --emerald:#173a2c; --emerald-l:#215339;
-    --gold:#c9a24a; --gold-b:#e6c66a; --burgundy:#7d2f2c; --burgundy-d:#5f2422; --green-ok:#2f6b45;
-    --ivory:#f4efe1; --ivory2:#eae0c9; --paper:#faf6ec;
-    --ink-t:#2a2318; --mute-t:#6b5f4a; --cream:#efe6d2; --muted:#b6ac93;
-    --glass:rgba(233,220,190,.07); --line:rgba(201,162,74,.30);
-    --disp:'Playfair Display', Georgia, serif; --body:'Lora', Georgia, serif;
+    --ink:#211712;
+    --oxblood:#4a1418;
+    --oxblood-deep:#33090c;
+    --brass:#c9a24b;
+    --brass-bright:#e6c878;
+    --parchment:#efe6d2;
+    --parchment-2:#e4d6b8;
+    --parchment-line:#cdbb92;
+    --green:#3f6b4f;
+    --red:#8e2f29;
+    --shadow:rgba(20,6,8,.45);
   }
-  *{box-sizing:border-box}
-  html,body{margin:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
   body{
-    font-family:var(--body); color:var(--cream); line-height:1.6;
-    min-height:100svh; padding:16px 14px 22px;
-    display:flex; flex-direction:column; align-items:center; gap:14px; overflow-x:hidden;
+    font-family:'EB Garamond',Georgia,serif;
+    color:var(--ink);
     background:
-      radial-gradient(1100px 520px at 50% -10%, rgba(201,162,74,.12), transparent 60%),
-      radial-gradient(800px 500px at 12% 112%, rgba(125,47,44,.16), transparent 60%),
-      linear-gradient(165deg,#0b1f18 0%, #10281f 46%, #0a1913 100%);
-    background-attachment:fixed;
+      radial-gradient(120% 80% at 50% -10%, #5a191e 0%, var(--oxblood) 38%, var(--oxblood-deep) 100%);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
   }
-  .app{width:100%; max-width:980px; display:flex; flex-direction:column; gap:14px}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(0,0,0,.18), transparent 30%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity:.9;
+  }
+  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:46px 24px 96px}
 
-  .hud{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
-  .brand{font-family:var(--disp); font-weight:900; font-size:20px; letter-spacing:.4px; display:flex; align-items:center; gap:8px; color:var(--cream)}
-  .brand span{color:var(--gold-b)}
-  .progress{flex:1; min-width:180px; display:flex; align-items:center; gap:10px}
-  .bar{flex:1; height:9px; border-radius:2px; background:rgba(0,0,0,.35); border:1px solid var(--line); overflow:hidden}
-  .bar-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--gold),var(--gold-b)); box-shadow:0 0 12px rgba(201,162,74,.5); transition:width .5s cubic-bezier(.4,0,.1,1)}
-  .prog-text{font-family:var(--body); font-size:12px; color:var(--muted); white-space:nowrap; letter-spacing:.3px}
-  .pills{display:flex; gap:7px}
-  .pill{font-family:var(--body); font-weight:600; font-size:12.5px; padding:6px 11px; border-radius:5px; background:var(--glass); border:1px solid var(--line); white-space:nowrap; color:var(--cream)}
-  .mute{cursor:pointer}
-  .mute:hover{border-color:var(--gold)}
+  /* ---------- Header / progress ---------- */
+  .topbar{display:flex;align-items:center;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+  .seal{flex:0 0 auto}
+  .court-id{flex:1 1 240px;min-width:200px}
+  .court-id .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--brass-bright)}
+  .court-id h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--parchment);
+    font-size:clamp(20px,3.4vw,30px);line-height:1.05;margin-top:3px}
+  .meter{flex:1 1 240px;min-width:200px}
+  .meter .lab{display:flex;justify-content:space-between;align-items:baseline;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--brass-bright);margin-bottom:6px}
+  .meter .lab b{font-size:14px;color:var(--parchment)}
+  .bar{height:9px;border:1px solid rgba(230,200,120,.5);border-radius:6px;
+    background:rgba(0,0,0,.3);overflow:hidden}
+  .bar i{display:block;height:100%;width:50%;border-radius:6px;
+    background:linear-gradient(90deg,#9b6a2a,var(--brass),var(--brass-bright));
+    transition:width .8s cubic-bezier(.2,.8,.2,1)}
 
-  .stage{
-    position:relative; width:100%; max-width:980px; aspect-ratio:960/520;
-    border-radius:10px; overflow:hidden; border:1px solid var(--line);
-    box-shadow:0 26px 62px rgba(0,0,0,.6), 0 0 0 1px rgba(201,162,74,.08) inset;
-    background:#12281f;
-  }
-  #game{display:block; width:100%; height:100%}
-  #fx{position:fixed; inset:0; width:100vw; height:100svh; pointer-events:none; z-index:60}
-  .hint{
-    position:absolute; top:10px; left:50%; transform:translateX(-50%);
-    font-family:var(--body); font-style:italic; font-size:12.5px; letter-spacing:.2px;
-    background:rgba(10,20,15,.76); border:1px solid var(--line); color:var(--cream);
-    padding:6px 15px; border-radius:5px; backdrop-filter:blur(5px);
-    white-space:nowrap; max-width:92%; overflow:hidden; text-overflow:ellipsis; transition:opacity .3s; pointer-events:none;
-  }
-
-  .overlay{
-    position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
-    padding:18px; overflow-y:auto;
-    background:radial-gradient(700px 460px at 50% 0%, rgba(201,162,74,.10), transparent 60%), rgba(7,16,12,.86);
-    backdrop-filter:blur(7px);
-  }
-  .hidden{display:none !important}
-  .card{
-    position:relative; width:100%; max-width:640px; margin:auto; color:var(--ink-t);
+  /* ---------- Card / sheet ---------- */
+  .sheet{
     background:
-      radial-gradient(120% 100% at 0% 0%, #fbf7ec, transparent 55%),
-      radial-gradient(120% 120% at 100% 100%, #e6dcc2, transparent 55%),
-      var(--ivory);
-    border:1px solid #cbb06a; border-radius:6px; padding:clamp(22px,4.2vw,34px);
-    box-shadow:0 32px 74px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.5) inset;
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") top 5px left 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%28150%2C0%29%20scale%28-1%2C1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") top 5px right 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%280%2C150%29%20scale%281%2C-1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") bottom 5px left 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%28150%2C150%29%20scale%28-1%2C-1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") bottom 5px right 5px / 78px 78px no-repeat,
+      linear-gradient(180deg,var(--parchment),var(--parchment-2));
+    border:1px solid var(--parchment-line);
+    border-radius:5px;
+    box-shadow:0 26px 60px -28px var(--shadow), inset 0 1px 0 rgba(255,255,255,.5);
+    padding:38px clamp(22px,4vw,46px);
+    position:relative;
   }
-  .card::before{content:''; position:absolute; inset:7px; border:1px solid rgba(201,162,74,.55); border-radius:3px; pointer-events:none}
-  .start-card,.win-card{max-width:680px; text-align:center}
+  .sheet::after{content:"";position:absolute;inset:9px;border:1px solid rgba(74,20,24,.22);
+    border-radius:3px;pointer-events:none}
+  .sheet::before{content:"";position:absolute;inset:14px;border:1px solid rgba(168,132,47,.32);
+    border-radius:2px;pointer-events:none;z-index:0}
+  .stage{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
-  .eyebrow{font-family:var(--body); font-size:11.5px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--burgundy); margin-bottom:12px}
-  .title{font-family:var(--disp); font-weight:900; line-height:1.05; margin:0 0 12px; font-size:clamp(30px,6.6vw,52px); color:var(--ink-t); letter-spacing:.3px}
-  .title .em{font-style:italic; font-weight:600; color:var(--burgundy)}
-  .title.small{font-size:clamp(24px,5vw,34px)}
-  .subtitle{font-family:var(--body); font-style:italic; font-size:clamp(14px,2.3vw,17px); color:var(--mute-t); margin:0 0 4px}
-  .story{font-size:14.5px; color:var(--ink-t); max-width:560px; margin:0 auto 22px}
-  .story b{color:var(--burgundy)}
-  .ornament{display:flex; align-items:center; gap:12px; justify-content:center; margin:16px auto 20px; max-width:320px; color:var(--gold)}
-  .ornament span{height:1px; flex:1; background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-  .ornament b{font-size:16px; line-height:1}
+  .phase-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--oxblood);
+    border-bottom:1px solid var(--parchment-line);padding-bottom:10px;margin-bottom:18px;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .phase-tag span{color:#7a5a33}
+  h2{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(26px,4.4vw,40px);
+    line-height:1.02;color:var(--oxblood);margin-bottom:14px;letter-spacing:.4px}
+  h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:var(--ink);margin:8px 0 6px}
+  p{font-size:17.5px;line-height:1.62;margin-bottom:14px;color:#332518}
+  p.lead{font-size:19.5px;font-style:italic;color:#4a392a}
+  .small{font-size:14px;color:#6a5238}
+  .law{font-family:'JetBrains Mono',monospace;font-size:.84em;background:rgba(74,20,24,.08);
+    border:1px solid rgba(74,20,24,.2);border-radius:3px;padding:1px 6px;color:var(--oxblood);white-space:nowrap}
+  hr.rule{border:none;border-top:1px solid var(--parchment-line);margin:20px 0}
+  .drop{float:left;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:62px;
+    line-height:.74;color:var(--oxblood);margin:6px 12px 0 0}
 
-  .legend{display:grid; grid-template-columns:1fr; gap:10px; margin:0 auto 24px; max-width:470px; text-align:left}
-  .chip{display:flex; align-items:center; gap:13px; padding:12px 14px; border-radius:6px; background:rgba(255,255,255,.4); border:1px solid #d3bd86}
-  .chip .ck{display:grid; place-items:center; width:42px; height:42px; flex:none; border-radius:50%; background:#f1e6c6; border:1px solid var(--gold); font-size:19px; color:var(--ink-t)}
-  .chip.gold .ck{background:#f3d79a}
-  .chip b{display:block; font-family:var(--disp); font-weight:700; font-size:15px; color:var(--ink-t)}
-  .chip i{display:block; font-size:12.5px; font-style:italic; color:var(--mute-t)}
+  /* ---------- Buttons ---------- */
+  .btn{font-family:'EB Garamond',serif;font-size:16px;font-weight:600;cursor:pointer;
+    border:none;border-radius:4px;padding:13px 26px;letter-spacing:.02em;
+    transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;position:relative}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:linear-gradient(180deg,#5a181d,var(--oxblood));color:var(--parchment);
+    box-shadow:0 10px 22px -10px rgba(40,8,10,.8), inset 0 1px 0 rgba(255,255,255,.12)}
+  .btn-primary:hover{filter:brightness(1.12)}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:4px;
+    border:1px solid var(--brass);opacity:.55}
+  .btn-ghost{background:transparent;color:var(--oxblood);border:1px solid var(--oxblood)}
+  .btn-ghost:hover{background:rgba(74,20,24,.07)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.4)}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;align-items:center}
 
-  .btn{
-    font-family:var(--disp); font-weight:700; font-size:16px; cursor:pointer; border-radius:6px;
-    padding:13px 32px; color:var(--gold-b); background:linear-gradient(180deg,var(--emerald-l),var(--emerald));
-    border:1px solid rgba(201,162,74,.6); box-shadow:0 8px 20px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.08) inset;
-    letter-spacing:.5px; transition:transform .12s, box-shadow .2s, filter .2s, border-color .2s;
+  /* ---------- Title screen ---------- */
+  .title-screen{text-align:center;padding-top:8px}
+  .title-screen .grand{font-family:'Cormorant Garamond',serif;font-weight:700;
+    font-size:clamp(40px,9vw,82px);line-height:.94;color:var(--oxblood);letter-spacing:.5px}
+  .title-screen .grand em{font-style:italic;color:#7a2128;display:block;font-size:.5em;
+    font-weight:500;letter-spacing:.08em;margin-top:6px}
+  .title-note{
+    max-width:760px;margin:18px auto 16px;padding:15px 22px;
+    border:1px solid rgba(74,20,24,.26);border-radius:4px;
+    background:rgba(255,255,255,.32);
+    font-family:'Cormorant Garamond',serif;font-size:clamp(19px,2.7vw,25px);
+    line-height:1.22;color:var(--oxblood);font-weight:600;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
   }
-  .btn:hover{transform:translateY(-2px); border-color:var(--gold-b); box-shadow:0 12px 26px rgba(0,0,0,.4)}
-  .btn:active{transform:translateY(0) scale(.98)}
-  .btn.big{font-size:18px; padding:15px 42px}
-  .btn.gold{background:linear-gradient(180deg,#e0c072,#c4972f); color:#1a3327; border-color:rgba(255,255,255,.35)}
-  .btn.ghost{background:transparent; color:var(--burgundy); border:1.5px solid #c3a05a}
-  .btn.ghost:hover{background:rgba(125,47,44,.06); border-color:var(--burgundy)}
-  .btn.cont{display:block; width:100%; margin-top:18px}
-  .tinynote{font-family:var(--body); font-style:italic; font-size:11.5px; color:var(--mute-t); margin:14px 0 0}
-
-  /* ============================================================
-     ✦ АНИМИРОВАННЫЙ ТИТУЛЬНЫЙ ЭКРАН — яркий, светящийся, живой
-     ============================================================ */
-  #startScreen{
-    background:
-      radial-gradient(920px 620px at 50% -10%, rgba(201,162,74,.22), transparent 62%),
-      radial-gradient(680px 520px at 8% 114%, rgba(125,47,44,.26), transparent 60%),
-      radial-gradient(760px 560px at 94% 108%, rgba(33,83,57,.36), transparent 60%),
-      rgba(4,11,8,.94);
+  .title-date{
+    margin:22px auto 0;font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#7a5a33;border-top:1px solid rgba(74,20,24,.22);
+    padding-top:14px;max-width:420px;
   }
-  #startScreen .card{
-    position:relative; z-index:2;
-    max-width:min(880px, 92vw); padding:clamp(24px,3vw,40px) clamp(26px,3.6vw,54px);
-    color:var(--cream); overflow:hidden;
-    background:
-      radial-gradient(150% 120% at 50% -18%, rgba(64,132,94,.96), transparent 62%),
-      radial-gradient(120% 90% at 50% 10%, rgba(230,198,106,.30), transparent 56%),
-      linear-gradient(165deg,#123c28 0%, #1d5a3d 46%, #0c2418 100%);
-    border:1px solid rgba(230,198,106,.68);
-    box-shadow:0 44px 96px rgba(0,0,0,.72), 0 0 0 1px rgba(230,198,106,.18) inset, 0 0 96px rgba(230,198,106,.22) inset;
-  }
+  .filigree{display:flex;align-items:center;gap:14px;justify-content:center;margin:18px 0 8px;
+    color:var(--brass)}
+  .filigree i{height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--oxblood))}
+  .filigree i:last-child{background:linear-gradient(90deg,var(--oxblood),transparent)}
 
-  /* ==== поле сверкающих нейронов вокруг карточки ==== */
-  #startScreen .neuro{ position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  /* ---------- Evidence grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:8px}
+  .ev{background:rgba(255,255,255,.4);border:1px solid var(--parchment-line);border-radius:4px;
+    padding:16px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .2s,border-color .2s;
+    position:relative;overflow:hidden}
+  .ev:hover{transform:translateY(-3px);box-shadow:0 14px 26px -16px var(--shadow);border-color:var(--oxblood)}
+  .ev .no{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#8a6c44}
+  .ev h4{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;margin:5px 0 4px;color:var(--ink)}
+  .ev p{font-size:13.5px;line-height:1.4;margin:0;color:#5e4a36}
+  .ev.seen{border-color:var(--oxblood)}
+  .ev .stamp{position:absolute;top:9px;right:9px;font-family:'JetBrains Mono',monospace;
+    font-size:8.5px;letter-spacing:.12em;padding:2px 6px;border-radius:2px;text-transform:uppercase;opacity:0}
+  .ev.admitted .stamp{opacity:1;background:rgba(63,107,79,.16);color:var(--green);border:1px solid var(--green)}
+  .ev.rejected .stamp{opacity:1;background:rgba(142,47,41,.14);color:var(--red);border:1px solid var(--red)}
 
-  /* центрированная (исходная) раскладка — расширено только само окно */
-  #startScreen .sc-body{ position:relative; z-index:2; }
-  /* вращающееся золотое сияние-аура за эмблемой */
-  #startScreen .sc-aura{
-    position:absolute; inset:-34% -14%; z-index:0; pointer-events:none; opacity:.95;
-    background:conic-gradient(from 0deg at 50% 40%,
-      rgba(201,162,74,0) 0deg, rgba(230,198,106,.26) 54deg, rgba(47,107,69,0) 116deg,
-      rgba(245,210,125,.22) 196deg, rgba(125,47,44,.16) 276deg, rgba(201,162,74,0) 360deg);
-    filter:blur(30px); animation:sc-aura 26s linear infinite;
-  }
-  @keyframes sc-aura{ to{transform:rotate(360deg)} }
-  #startScreen .card::before{ border-color:rgba(230,198,106,.62); z-index:1; animation:sc-frame 4.6s ease-in-out infinite; }
-  @keyframes sc-frame{ 0%,100%{box-shadow:0 0 10px rgba(230,198,106,.10) inset} 50%{box-shadow:0 0 22px rgba(230,198,106,.34) inset, 0 0 16px rgba(230,198,106,.20)} }
-  #startScreen .card::after{
-    content:''; position:absolute; top:0; left:-70%; width:55%; height:100%; z-index:0; pointer-events:none;
-    background:linear-gradient(105deg, transparent, rgba(235,205,120,.14) 44%, rgba(255,246,214,.24) 50%, rgba(235,205,120,.14) 56%, transparent);
-    transform:skewX(-16deg); animation:sc-sweep 7s ease-in-out infinite;
-  }
-  @keyframes sc-sweep{ 0%,10%{left:-70%} 62%,100%{left:135%} }
+  /* ---------- Selectable norms ---------- */
+  .norm{display:flex;gap:13px;align-items:flex-start;background:rgba(255,255,255,.38);
+    border:1px solid var(--parchment-line);border-radius:4px;padding:14px 16px;margin-bottom:11px;
+    cursor:pointer;transition:border-color .2s,background .2s,transform .12s}
+  .norm:hover{transform:translateX(3px);border-color:var(--oxblood)}
+  .norm .box{flex:0 0 auto;width:22px;height:22px;border:1.5px solid var(--oxblood);border-radius:3px;
+    margin-top:3px;display:grid;place-items:center;color:transparent;font-weight:700;transition:.18s}
+  .norm.on{background:rgba(74,20,24,.09);border-color:var(--oxblood)}
+  .norm.on .box{background:var(--oxblood);color:var(--parchment)}
+  .norm .nm{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;color:var(--ink)}
+  .norm .ds{font-size:14px;color:#5e4a36;margin-top:2px}
 
-  #startScreen .eyebrow{ color:var(--gold-b); text-shadow:0 0 12px rgba(230,198,106,.35); }
-  #startScreen .subtitle{ color:#dccfab; }
-  #startScreen .story{ color:#e9ddc0; }
-  #startScreen .story b{ color:var(--gold-b); }
-
-  #startScreen .title{
-    background:linear-gradient(100deg,#fff3cf 0%, #e6c66a 26%, #fff8e2 50%, #c9a24a 74%, #ffedbf 100%);
-    background-size:230% auto; -webkit-background-clip:text; background-clip:text;
-    color:transparent; -webkit-text-fill-color:transparent;
-    animation:sc-shine 5.5s linear infinite, sc-titleglow 3.6s ease-in-out infinite;
-  }
-  @keyframes sc-shine{ from{background-position:0% center} to{background-position:230% center} }
-  @keyframes sc-titleglow{ 0%,100%{filter:drop-shadow(0 2px 10px rgba(201,162,74,.45))} 50%{filter:drop-shadow(0 0 30px rgba(230,198,106,.92))} }
-  #startScreen .title .em{ color:#ffd7a1; -webkit-text-fill-color:#ffd7a1; }
-
-  #startScreen .ornament{ color:var(--gold-b); }
-  #startScreen .ornament span{ background:linear-gradient(90deg,transparent,var(--gold-b),transparent); box-shadow:0 0 10px rgba(230,198,106,.4); }
-  #startScreen .ornament b{ display:inline-block; animation:sc-scale 3s ease-in-out infinite; text-shadow:0 0 16px rgba(230,198,106,.8); transform-origin:center; }
-  @keyframes sc-scale{ 0%,100%{transform:scale(1) rotate(-5deg)} 50%{transform:scale(1.2) rotate(5deg)} }
-
-  #startScreen .chip{ background:rgba(255,255,255,.055); border-color:rgba(201,162,74,.3); }
-  #startScreen .chip .ck{ background:rgba(201,162,74,.16); color:var(--gold-b); border-color:rgba(201,162,74,.55); box-shadow:0 0 12px rgba(201,162,74,.25); }
-  #startScreen .chip.gold .ck{ background:rgba(201,162,74,.32); }
-  #startScreen .chip b{ color:#f2e9d2; }
-  #startScreen .chip i{ color:#b9ad8f; }
-  #startScreen .tinynote{ color:#9f957c; }
-
-  #startScreen .btn.big{
-    color:#ffe9b0; border-color:rgba(230,198,106,.75);
-    background:linear-gradient(180deg,#2c714c,#164029);
-    box-shadow:0 12px 28px rgba(0,0,0,.5), 0 0 0 1px rgba(230,198,106,.25) inset;
-    animation:sc-cta 2.7s ease-in-out infinite;
-  }
-  #startScreen .btn.big:hover{ animation:none; transform:translateY(-2px); }
-  @keyframes sc-cta{
-    0%,100%{box-shadow:0 12px 28px rgba(0,0,0,.5), 0 0 14px rgba(230,198,106,.28), 0 0 0 1px rgba(230,198,106,.25) inset}
-    50%{box-shadow:0 14px 32px rgba(0,0,0,.55), 0 0 36px rgba(230,198,106,.62), 0 0 0 1px rgba(230,198,106,.55) inset}
-  }
-
-  /* эмблема — весы правосудия */
-  #startScreen .hero{ margin:4px auto 2px; display:flex; justify-content:center; }
-  #startScreen .emblem{ width:clamp(158px,34vw,208px); height:auto; display:block;
-    filter:drop-shadow(0 6px 20px rgba(0,0,0,.5)) drop-shadow(0 0 22px rgba(230,198,106,.38));
-    animation:sc-emblem-float 6s ease-in-out infinite; }
-  @keyframes sc-emblem-float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
-  .emblem .scales{ filter:drop-shadow(0 0 6px rgba(230,198,106,.55)); }
-  .emblem .halo{ transform-box:view-box; transform-origin:130px 116px; animation:sc-halo 3.8s ease-in-out infinite; }
-  @keyframes sc-halo{ 0%,100%{opacity:.55; transform:scale(.9)} 50%{opacity:.95; transform:scale(1.1)} }
-  .emblem .rays{ transform-box:view-box; transform-origin:130px 116px; animation:sc-spin 28s linear infinite; }
-  @keyframes sc-spin{ to{transform:rotate(360deg)} }
-  .emblem .ring{ transform-box:view-box; transform-origin:130px 116px; animation:sc-spinr 46s linear infinite; }
-  @keyframes sc-spinr{ to{transform:rotate(-360deg)} }
-  .emblem .beam{ transform-box:view-box; transform-origin:130px 70px; animation:sc-sway 4.4s ease-in-out infinite; }
-  @keyframes sc-sway{ 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
-  .emblem .gem{ transform-box:view-box; transform-origin:130px 46px; animation:sc-gem 2.8s ease-in-out infinite; }
-  @keyframes sc-gem{ 0%,100%{opacity:.85; transform:scale(.88)} 50%{opacity:1; transform:scale(1.16)} }
-  .emblem .spk-i{ transform-box:fill-box; transform-origin:center; animation:sc-twinkle 2.4s ease-in-out infinite; }
-  @keyframes sc-twinkle{ 0%,100%{opacity:.12; transform:scale(.35)} 50%{opacity:1; transform:scale(1)} }
-
-  @media (prefers-reduced-motion: reduce){
-    #startScreen .card::after, #startScreen .card::before, #startScreen .title, #startScreen .ornament b, #startScreen .btn.big,
-    #startScreen .sc-aura, #startScreen .emblem,
-    .emblem .halo, .emblem .rays, .emblem .ring, .emblem .beam, .emblem .gem, .emblem .spk-i{ animation:none !important; }
-    .emblem .halo{ opacity:.7 }
-    #startScreen .sc-aura{ opacity:.5 }
-  }
-
-  .qcard{--npc:#7d2f2c}
-  .case-tag{font-family:var(--disp); font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--burgundy); margin-bottom:12px}
-  .npc-head{display:flex; align-items:center; gap:14px; margin-bottom:16px}
-  .npc-emoji{display:grid; place-items:center; width:52px; height:52px; flex:none; font-size:29px; border-radius:50%;
-    background:#f1e6c6; border:1px solid var(--npc); box-shadow:0 0 0 3px rgba(255,255,255,.5) inset}
-  .npc-name{font-family:var(--disp); font-weight:700; font-size:19px; color:var(--ink-t)}
-  .npc-role{font-family:var(--body); font-style:italic; font-size:12.5px; color:var(--mute-t)}
-  .say-label{font-family:var(--body); font-size:10.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--mute-t); margin-bottom:6px}
-  .speech{position:relative; background:rgba(255,255,255,.45); border:1px solid #d3bd86; border-left:3px solid var(--npc);
-    border-radius:0 6px 6px 6px; padding:13px 16px; font-size:14.5px; font-style:italic; color:var(--ink-t); margin-bottom:18px}
-  .q-title{font-family:var(--disp); font-weight:700; font-size:clamp(17px,2.7vw,21px); line-height:1.35; margin:0 0 14px; color:var(--ink-t)}
-
-  .hintbtn{font-family:var(--body); font-style:italic; font-size:13px; color:var(--burgundy); background:transparent;
-    border:1px dashed #c3a05a; border-radius:5px; padding:9px 14px; cursor:pointer; margin-bottom:14px; transition:background .2s,border-color .2s}
-  .hintbtn:hover:not(:disabled){background:rgba(125,47,44,.06); border-color:var(--burgundy)}
-  .hintbtn:disabled{opacity:.55; cursor:default}
-  .hintnote{margin-bottom:16px; padding:12px 15px; border-radius:6px; background:#f6ecd0; border:1px solid #d3bd86; border-left:3px solid var(--gold); font-size:13.5px; font-style:italic; color:var(--ink-t)}
-
-  .options{display:flex; flex-direction:column; gap:9px}
-  .opt{display:flex; align-items:center; gap:13px; width:100%; text-align:left; cursor:pointer;
-    font-family:var(--body); font-size:14.5px; color:var(--ink-t);
-    background:var(--paper); border:1px solid #d3bd86; border-radius:6px; padding:13px 15px;
-    transition:transform .12s, border-color .2s, background .2s, box-shadow .2s}
-  .opt:hover:not(:disabled){transform:translateY(-2px); border-color:var(--gold); box-shadow:0 6px 16px rgba(0,0,0,.12)}
+  /* ---------- Trial dialogue ---------- */
+  .speaker{display:flex;gap:14px;margin-bottom:6px;align-items:center}
+  .badge{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:21px;
+    background:var(--oxblood);color:var(--parchment);box-shadow:0 6px 14px -8px var(--shadow)}
+  .badge.judge{background:#2b2b33}
+  .speaker .who{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:#7a5a33}
+  .speaker .who b{display:block;font-family:'Cormorant Garamond',serif;font-size:19px;
+    letter-spacing:0;text-transform:none;color:var(--ink)}
+  .quote{background:rgba(255,255,255,.45);border-left:3px solid var(--oxblood);border-radius:0 4px 4px 0;
+    padding:14px 18px;font-size:17px;font-style:italic;color:#3a2c1e;margin:4px 0 18px}
+  .opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.4);
+    border:1px solid var(--parchment-line);border-radius:4px;padding:14px 18px;margin-bottom:10px;
+    font-family:'EB Garamond',serif;font-size:16px;color:var(--ink);cursor:pointer;
+    transition:border-color .18s,background .18s,transform .12s;line-height:1.4}
+  .opt:hover:not(:disabled){border-color:var(--oxblood);transform:translateX(3px);background:rgba(74,20,24,.05)}
   .opt:disabled{cursor:default}
-  .opt-key{display:grid; place-items:center; width:30px; height:30px; flex:none; border-radius:50%; background:#efe2bf; border:1px solid var(--gold); font-family:var(--disp); font-weight:700; font-size:14px; color:var(--ink-t)}
-  .opt-text{flex:1}
-  .opt.correct{border-color:var(--green-ok); background:#e2eddc}
-  .opt.correct .opt-key{background:var(--green-ok); color:#eef7e6; border-color:var(--green-ok)}
-  .opt.wrong{border-color:var(--burgundy); background:#f1ddd8}
-  .opt.wrong .opt-key{background:var(--burgundy); color:#fdeee9; border-color:var(--burgundy)}
+  .opt.good{border-color:var(--green);background:rgba(63,107,79,.12)}
+  .opt.mid{border-color:var(--brass);background:rgba(201,162,75,.14)}
+  .opt.bad{border-color:var(--red);background:rgba(142,47,41,.12)}
+  .opt .verdict-line{display:block;margin-top:9px;font-size:13.5px;font-style:italic;
+    padding-top:9px;border-top:1px dashed rgba(74,20,24,.25)}
+  .feedback{font-size:14px;color:#5e4a36;margin:4px 0 0}
 
-  .explain{margin-top:16px; padding:15px 17px; border-radius:6px; background:rgba(255,255,255,.45); border:1px solid #d3bd86; border-left:3px solid var(--gold)}
-  .stamp{display:inline-block; font-family:var(--disp); font-weight:700; font-size:12px; letter-spacing:1.5px; text-transform:uppercase;
-    padding:5px 13px; border:1.5px solid; border-radius:4px; transform:rotate(-2deg); margin-bottom:10px}
-  .stamp.ok{color:var(--green-ok); border-color:var(--green-ok)}
-  .stamp.no{color:var(--burgundy); border-color:var(--burgundy)}
-  .explain p{margin:0; font-size:13.5px; color:var(--ink-t)}
+  /* ---------- Verdict ---------- */
+  .gavel-wrap{text-align:center;margin:6px 0 14px}
+  .outcome{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(26px,5vw,40px);
+    text-align:center;line-height:1.06;margin:6px 0 4px}
+  .outcome.win{color:var(--green)}
+  .outcome.part{color:#9b6a2a}
+  .outcome.loss{color:var(--red)}
+  .scorebox{font-family:'JetBrains Mono',monospace;text-align:center;font-size:12px;letter-spacing:.14em;
+    color:#7a5a33;text-transform:uppercase;margin-bottom:18px}
 
-  .win-emoji{font-size:50px; line-height:1; margin-bottom:4px}
-  .rank{font-family:var(--disp); font-weight:700; font-style:italic; font-size:clamp(18px,3.4vw,24px); color:var(--burgundy); margin-bottom:12px}
-  .score-big{font-family:var(--disp); font-weight:900; font-size:clamp(32px,6.6vw,48px); line-height:1; color:var(--ink-t)}
-  .score-note{font-family:var(--body); font-style:italic; font-size:14px; color:var(--mute-t); margin:4px 0 6px}
-  .ph{font-family:var(--body); font-size:11.5px; letter-spacing:2.5px; text-transform:uppercase; color:var(--burgundy); text-align:center; margin:0 0 14px}
-  .principles{display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:left; margin-bottom:24px}
-  .pcard{background:rgba(255,255,255,.45); border:1px solid #d3bd86; border-radius:6px; padding:13px}
-  .pnum{font-family:var(--body); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px}
-  .pic{font-size:22px; margin-bottom:5px}
-  .ptitle{font-family:var(--disp); font-weight:700; font-size:14px; color:var(--burgundy-d); margin-bottom:3px}
-  .ptext{font-size:12.5px; color:var(--ink-t); line-height:1.45}
-  .win-btns{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+  /* ---------- Log / pills ---------- */
+  .pillrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+    padding:4px 9px;border-radius:20px;border:1px solid rgba(74,20,24,.3);color:var(--oxblood);
+    background:rgba(255,255,255,.3)}
 
-  .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; width:100%; max-width:640px; margin:0 auto}
-  .act{-webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; cursor:pointer;
-    font-family:var(--disp); font-weight:700; font-size:16px; letter-spacing:.4px; border-radius:9px; padding:15px 26px; line-height:1.2; min-height:58px;
-    transition:transform .1s, box-shadow .2s, filter .2s, opacity .2s, border-color .2s}
-  .act.answer{flex:0 1 360px; color:var(--gold-b); background:linear-gradient(180deg,var(--emerald-l),var(--emerald)); border:1px solid rgba(201,162,74,.55); box-shadow:0 8px 20px rgba(0,0,0,.35)}
-  .act:hover:not(:disabled){transform:translateY(-2px); border-color:var(--gold-b)}
-  .act:active:not(:disabled){transform:scale(.98)}
-  .act:disabled{opacity:.4; cursor:default; filter:saturate(.6)}
-  .kbd{font-family:var(--body); font-style:italic; font-size:11.5px; color:var(--muted); text-align:center; margin:0; max-width:600px}
+  /* ---------- Modal ---------- */
+  .modal-bg{position:fixed;inset:0;z-index:50;background:rgba(20,5,7,.66);backdrop-filter:blur(3px);
+    display:none;place-items:center;padding:22px;animation:fade .25s ease}
+  .modal-bg.show{display:grid}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{max-width:520px;width:100%;background:linear-gradient(180deg,var(--parchment),var(--parchment-2));
+    border:1px solid var(--parchment-line);border-radius:6px;padding:30px;
+    box-shadow:0 40px 80px -30px #000;animation:rise .35s cubic-bezier(.2,.8,.2,1) both;
+    max-height:88vh;overflow:auto}
+  .modal .mtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    color:#8a6c44;text-transform:uppercase}
+  .modal h3{margin-top:4px}
 
-  .btn:focus-visible,.opt:focus-visible,.act:focus-visible,.mute:focus-visible,.hintbtn:focus-visible{outline:3px solid var(--gold); outline-offset:3px}
+  /* ---------- Toast ---------- */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);
+    z-index:60;background:var(--ink);color:var(--parchment);padding:12px 22px;border-radius:30px;
+    font-size:14.5px;border:1px solid var(--brass);box-shadow:0 16px 40px -16px #000;
+    opacity:0;transition:.4s cubic-bezier(.2,.8,.2,1);pointer-events:none;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  @media (max-width:560px){
-    .principles{grid-template-columns:1fr}
-    .act.answer{flex:1 1 100%}
-    .brand{font-size:17px}
-  }
-  @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
+  .foot{text-align:center;margin-top:22px;font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.16em;color:rgba(239,230,210,.45);text-transform:uppercase}
+  ul.clean{list-style:none}
+  ul.clean li{position:relative;padding-left:20px;margin-bottom:8px;font-size:16.5px;line-height:1.5;color:#3a2c1e}
+  ul.clean li::before{content:"§";position:absolute;left:0;color:var(--oxblood);font-weight:700}
 </style>
 </head>
 <body>
-  <div class="app">
-    <header class="hud">
-      <div class="brand">⚖️ Право на <span>ментальную конфиденциальность</span></div>
-      <div class="progress">
-        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-        <span class="prog-text" id="progText">Ответы на вопросы 0/15</span>
-      </div>
-      <div class="pills">
-        <span class="pill" id="deducePill" title="Верных заключений">✅ 0</span>
-        <span class="pill" id="hintPill" title="Обращений к своду">📖 0</span>
-        <button class="pill mute" id="muteBtn" type="button" aria-label="Звук" aria-pressed="false">🔊</button>
-      </div>
-    </header>
+<canvas id="neuroField" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
+<div class="wrap">
 
-    <div class="stage">
-      <canvas id="game"></canvas>
-      <div class="hint" id="hint"></div>
-
-      <div class="overlay" id="startScreen">
-        <canvas class="neuro" id="neuroCanvas" aria-hidden="true"></canvas>
-        <div class="card start-card">
-          <div class="sc-aura" aria-hidden="true"></div>
-
-          <div class="sc-body">
-          <div class="eyebrow">Образовательная юридическая игра · для школьников и студентов</div>
-
-          <div class="hero" aria-hidden="true">
-            <svg class="emblem" viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg" role="img">
-              <defs>
-                <linearGradient id="scGold" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#fdeeb8"/>
-                  <stop offset=".40" stop-color="#e9c96e"/>
-                  <stop offset=".62" stop-color="#c9a24a"/>
-                  <stop offset="1" stop-color="#8f7130"/>
-                </linearGradient>
-                <radialGradient id="scHalo" cx="50%" cy="50%" r="50%">
-                  <stop offset="0" stop-color="#ffe6a6" stop-opacity=".82"/>
-                  <stop offset="52%" stop-color="#e6c66a" stop-opacity=".34"/>
-                  <stop offset="100%" stop-color="#c9a24a" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="scPan" cx="50%" cy="30%" r="80%">
-                  <stop offset="0" stop-color="#fff0c2"/>
-                  <stop offset="1" stop-color="#c9a24a"/>
-                </radialGradient>
-              </defs>
-
-              <circle class="halo" cx="130" cy="116" r="90" fill="url(#scHalo)"/>
-
-              <g class="rays" fill="url(#scGold)" opacity=".9">
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(0 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(30 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(60 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(90 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(120 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(150 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(180 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(210 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(240 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(270 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(300 130 116)"/>
-                <rect x="128.6" y="22" width="2.8" height="20" rx="1.4" transform="rotate(330 130 116)"/>
-              </g>
-
-              <circle class="ring" cx="130" cy="116" r="66" fill="none" stroke="url(#scGold)" stroke-width="1.4" stroke-dasharray="3 9" opacity=".75"/>
-
-              <g class="scales">
-                <!-- центральная стойка -->
-                <rect x="126.5" y="70" width="7" height="118" rx="2" fill="url(#scGold)"/>
-                <rect x="128.5" y="52" width="3" height="18" fill="url(#scGold)"/>
-                <!-- пьедестал -->
-                <rect x="107" y="186" width="46" height="10" rx="2" fill="url(#scGold)"/>
-                <rect x="95" y="196" width="70" height="13" rx="3" fill="url(#scGold)"/>
-
-                <!-- навершие-камень -->
-                <g class="gem">
-                  <path d="M130,35 L139,46 L130,59 L121,46 Z" fill="url(#scGold)" stroke="#fff6d6" stroke-width=".6"/>
-                  <circle cx="130" cy="46" r="2.4" fill="#fff8e0"/>
-                </g>
-
-                <!-- коромысло с чашами -->
-                <g class="beam">
-                  <rect x="50" y="66.5" width="160" height="7" rx="3.5" fill="url(#scGold)"/>
-                  <circle cx="130" cy="70" r="6" fill="url(#scGold)" stroke="#fff6d6" stroke-width=".5"/>
-                  <circle cx="52" cy="70" r="3.4" fill="url(#scGold)"/>
-                  <circle cx="208" cy="70" r="3.4" fill="url(#scGold)"/>
-
-                  <!-- левая чаша -->
-                  <path d="M52,70 L34,118 M52,70 L74,118" stroke="url(#scGold)" stroke-width="1.3" fill="none"/>
-                  <path d="M32,120 Q54,141 76,120" fill="url(#scPan)" stroke="url(#scGold)" stroke-width="1"/>
-                  <ellipse cx="54" cy="120" rx="23" ry="4.6" fill="url(#scPan)" stroke="url(#scGold)" stroke-width="1"/>
-
-                  <!-- правая чаша -->
-                  <path d="M208,70 L186,118 M208,70 L228,118" stroke="url(#scGold)" stroke-width="1.3" fill="none"/>
-                  <path d="M184,120 Q206,141 228,120" fill="url(#scPan)" stroke="url(#scGold)" stroke-width="1"/>
-                  <ellipse cx="206" cy="120" rx="23" ry="4.6" fill="url(#scPan)" stroke="url(#scGold)" stroke-width="1"/>
-                </g>
-              </g>
-
-              <g class="sparks" fill="#fff6d6">
-                <g class="spk" transform="translate(66,58)"><path class="spk-i" style="animation-delay:0s"   d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(198,66)"><path class="spk-i" style="animation-delay:-.7s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(40,150)"><path class="spk-i" style="animation-delay:-1.3s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(222,150)"><path class="spk-i" style="animation-delay:-1.9s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(130,24)"><path class="spk-i" style="animation-delay:-.4s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(90,184)"><path class="spk-i" style="animation-delay:-2.2s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(172,184)"><path class="spk-i" style="animation-delay:-1.1s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-                <g class="spk" transform="translate(150,50)"><path class="spk-i" style="animation-delay:-1.6s" d="M0,-5.5 L1.3,-1.3 L5.5,0 L1.3,1.3 L0,5.5 L-1.3,1.3 L-5.5,0 L-1.3,-1.3 Z"/></g>
-              </g>
-            </svg>
-          </div>
-
-          <h1 class="title">Право на <span class="em">ментальную конфиденциальность</span></h1>
-          <p class="subtitle">Обучающий интерактивный материал для слушателей Летней школы МГИМО «Цифровая трансформация правового пространства ЕАЭС» подготовлен доц. Е.К. Матевосовой</p>
-          <div class="ornament"><span></span><b>⚖</b><span></span></div>
-          <p class="story">Вы — уважаемый советник по правовым вопросам и защитник ментальной конфиденциальности. Пятнадцать персонажей предложат свои нейротехнологии, и каждому нужно дать верное краткое правовое заключение-ответ. Советник идёт от одного к другому сам — вам остаётся выбрать, что делать при встрече.</p>
-          <div class="legend">
-            </div>
-          <button class="btn big" id="startBtn" type="button">Начать игру</button>
-          <p class="tinynote">Работает на телефоне и компьютере — просто нажимайте кнопку под сценой.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="overlay hidden" id="questionScreen">
-        <div class="card qcard" id="questionCard">
-          <div class="case-tag" id="qCase">Вопрос № I</div>
-          <div class="npc-head">
-            <span class="npc-emoji" id="qDevice">🥽</span>
-            <div><div class="npc-name" id="qName"></div><div class="npc-role" id="qRole"></div></div>
-          </div>
-          <div class="say-label">Обращается к вам</div>
-          <div class="speech" id="qOffer"></div>
-          <h2 class="q-title" id="qText"></h2>
-          <button class="hintbtn" id="qHintBtn" type="button">📖 Подсказка</button>
-          <div class="hintnote hidden" id="qHintNote"></div>
-          <div class="options" id="qOptions"></div>
-          <div class="explain hidden" id="qExplain"></div>
-          <button class="btn cont hidden" id="qContinue" type="button">К следующему персонажу →</button>
-        </div>
-      </div>
-
-      <div class="overlay hidden" id="victoryScreen">
-        <div class="card win-card">
-          <div class="win-emoji" id="vRankIcon">⚖️</div>
-          <h1 class="title small">Игра завершена</h1>
-          <div class="rank" id="vRank"></div>
-          <div class="score-big" id="vScore"></div>
-          <p class="score-note" id="vScoreNote"></p>
-          <div class="ornament"><span></span><b>⚖</b><span></span></div>
-          <h3 class="ph">Ключевые положения о защите ментальной конфиденциальности</h3>
-          <div class="principles" id="vPrinciples"></div>
-          <div class="win-btns">
-            <button class="btn gold" id="celebrateBtn" type="button">🖋 Скрепить печатью</button>
-            <button class="btn ghost" id="replayBtn" type="button">↻ Новое дело</button>
-          </div>
-        </div>
-      </div>
+  <!-- header -->
+  <div class="topbar" id="topbar" style="visibility:hidden">
+    <div class="seal">
+      <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#e6c878" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#c9a24b" stroke-width="0.8" stroke-dasharray="2 3"/>
+        <g stroke="#e6c878" stroke-width="2" fill="none" stroke-linecap="round">
+          <line x1="50" y1="22" x2="50" y2="70"/>
+          <line x1="30" y1="34" x2="70" y2="34"/>
+          <line x1="50" y1="70" x2="42" y2="78"/><line x1="50" y1="70" x2="58" y2="78"/>
+          <path d="M30 34 L22 52 A8 8 0 0 0 38 52 Z" fill="rgba(230,200,120,.12)"/>
+          <path d="M70 34 L62 52 A8 8 0 0 0 78 52 Z" fill="rgba(230,200,120,.12)"/>
+        </g>
+        <circle cx="50" cy="22" r="3" fill="#e6c878"/>
+      </svg>
     </div>
-
-    <nav class="actions" id="actionBar" aria-label="Действия">
-      <button class="act answer" id="btnAnswer" type="button" disabled>⚖️ Ответить на вопрос</button>
-    </nav>
-    <p class="kbd">Советник идёт сам — нажимайте «Ответить на вопрос». На компьютере: Enter — ответить.</p>
+    <div class="court-id">
+      <div class="kicker">Симулятор судебного процесса</div>
+      <h1>Дело № 1001-А/2026 · о защите нейроданных</h1>
+    </div>
+    <div class="meter">
+      <div class="lab"><span>Правовая убедительность позиции</span><b id="scoreNum">50</b></div>
+      <div class="bar"><i id="bar"></i></div>
+    </div>
   </div>
 
-  <canvas id="fx"></canvas>
+  <!-- main render target -->
+  <div id="app"></div>
+
+  <div class="foot">Образовательная игра · вымышленное дело </div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast"></div>
 
 <script>
-"use strict";
-/* ===================== CONSTANTS ===================== */
-var VIEW_W=960, VIEW_H=520, GROUND_Y=430;
-var MOVE=3.3;
-var NPC_X=[]; for(var _i=0;_i<15;_i++) NPC_X.push(560+_i*480);
-var FINISH=NPC_X[14]+360, WORLD_W=FINISH+160;
-var ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'];
-
-/* ===================== PRINCIPLES ===================== */
-var CORE={
-  consent:{icon:'🔒', title:'Информированное согласие', text:'Нейроданные собирают только с вашего ясного, понятного разрешения — и вы всегда можете сказать «нет».'},
-  privacy:{icon:'🧠', title:'Ментальная приватность', text:'Ваши мысли и эмоции принадлежат только вам — даже на работе, в школе и на улице.'},
-  freedom:{icon:'🛡️', title:'Когнитивная свобода', text:'Разум неприкосновенен: мысли — не товар, а память и психику нельзя менять без согласия.'},
-  minors:{icon:'🧒', title:'Защита уязвимых', text:'Дети, пожилые и другие уязвимые люди нуждаются в усиленной защите нейроданных.'},
-  will:{icon:'🧭', title:'Свобода воли', text:'Решения вы принимаете сами — без скрытого вмешательства в ваш мозг.'}
+/* =========================================================
+   СОСТОЯНИЕ ИГРЫ
+========================================================= */
+const State = {
+  score: 50,
+  phase: 'title',
+  examined: new Set(),     // осмотренные материалы
+  admitted: new Set(),     // приобщённые к делу
+  rejected: new Set(),
+  norms: new Set(),        // выбранные нормы права
+  qualificationDone: false,
+  trialRound: 0,
+  trialAnswered: false,
+  log: []
 };
-var CORE_LIST=[CORE.consent, CORE.privacy, CORE.freedom, CORE.minors, CORE.will];
 
-/* Ключевые положения для финального экрана — по одному на каждый из 15 вопросов игры */
-var PROVISIONS=[
-  {icon:'🔒', title:'Информированное согласие', text:'Нейроданные собирают только с ясного и понятного разрешения человека, и он всегда вправе отказаться — «бесплатная» услуга не даёт права на его мысли.'},
-  {icon:'🧠', title:'Приватность мыслей на работе', text:'Даже на рабочем месте мысли и внимание остаются личными: постоянное «чтение» сознания сотрудников недопустимо.'},
-  {icon:'🚫', title:'Мысли — не товар', text:'Нейроданные раскрывают самое сокровенное, поэтому их свободная продажа рекламодателям должна быть строго ограничена законом.'},
-  {icon:'🧒', title:'Особая защита детей', text:'Сбор нейроданных школьников возможен лишь с согласия родителей, при минимуме данных и без наказаний за «неправильные мысли».'},
-  {icon:'🧭', title:'Свобода воли', text:'Скрытое подталкивание мозга к покупкам и решениям запрещено: любое воздействие должно быть прозрачным и добровольным.'},
-  {icon:'⏳', title:'Ограничение цели и срока хранения', text:'Согласие даётся под конкретную цель: хранить нейроданные бессрочно и использовать их для новых задач без нового разрешения нельзя.'},
-  {icon:'⚖️', title:'Запрет дискриминации по нейроданным', text:'Нейроданные нельзя превращать в инструмент против человека: «тарифы по мыслям» и отказы на их основе ведут к дискриминации.'},
-  {icon:'🏙️', title:'Приватность в публичных местах', text:'Улица — не повод отменять тайну внутреннего мира: скрытое массовое сканирование эмоций прохожих недопустимо.'},
-  {icon:'🛡️', title:'Право на неизменный разум', text:'Никого нельзя принуждать «улучшать» мозг чипами или имплантами — тем более ставить это условием приёма на работу.'},
-  {icon:'💭', title:'Целостность памяти и психики', text:'Стирание и изменение воспоминаний и мыслей допустимы лишь при строжайших гарантиях и осознанном согласии человека.'},
-  {icon:'🤝', title:'Защита уязвимых людей', text:'Пожилые и люди в уязвимом состоянии нуждаются в усиленной защите: эксплуатировать «минуты слабости» по нейроданным запрещено.'},
-  {icon:'🧸', title:'Детские нейроданные — не для рекламы', text:'Тайный сбор нейроданных детей недопустим: нужны согласие родителей, строгая минимизация и полная прозрачность.'},
-  {icon:'🗳️', title:'Свобода политического выбора', text:'Скрытое нейровоздействие на избирателей подрывает честность решений: выбор гражданина должен оставаться свободным.'},
-  {icon:'💘', title:'Неприкосновенность чувств', text:'Тайно усиливать или направлять эмоции человека нельзя: власть над собственными чувствами принадлежит только ему самому.'},
-  {icon:'🔬', title:'Новая цель — новое согласие', text:'Данные, собранные для науки, нельзя передавать третьим лицам: для любой новой цели требуется отдельное осознанное согласие.'}
+const app = document.getElementById('app');
+const topbar = document.getElementById('topbar');
+
+/* ---------- утилиты ---------- */
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+function setScore(delta){
+  State.score = clamp(State.score+delta,0,100);
+  document.getElementById('scoreNum').textContent = State.score;
+  document.getElementById('bar').style.width = State.score+'%';
+}
+let toastTimer;
+function toast(msg,ms=2600){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),ms);
+}
+function addLog(s){ if(!State.log.includes(s)) State.log.push(s); }
+
+/* ---------- модальное окно ---------- */
+const modalBg=document.getElementById('modalBg');
+const modal=document.getElementById('modal');
+function openModal(html){ modal.innerHTML=html; modalBg.classList.add('show'); }
+function closeModal(){ modalBg.classList.remove('show'); }
+modalBg.addEventListener('click',e=>{ if(e.target===modalBg) closeModal(); });
+
+/* =========================================================
+   ДАННЫЕ ИГРЫ
+========================================================= */
+const EVIDENCE = [
+  { id:'eula', no:'Том I, л. 4', title:'Пользовательское соглашение', teaser:'Условия использования нейроинтерфейса «ЭрудитЛинк».',
+    relevant:true, body:`Соглашение содержит п. 7.3, согласно которому пользователь «выражает согласие на обработку данных активности устройства в целях улучшения сервиса». Понятие «нейроданные» в тексте отсутствует; согласие на их передачу третьим лицам и использование в рекламных целях прямо не выражено. <span class="law">ст. 9 ФЗ-152</span> требует конкретного, информированного и сознательного согласия.`,
+    note:'Соглашение не содержит конкретного согласия на передачу нейроданных — усиливает позицию истца.' },
+  { id:'logs', no:'Том I, л. 19', title:'Журналы передачи данных', teaser:'Технические логи серверов ответчика.',
+    relevant:true, body:`Логи фиксируют 1 247 сеансов выгрузки массивов нейрофизиологических показателей (паттерны внимания, эмоциональные реакции) на серверы рекламного партнёра. Передача осуществлялась без деперсонализации, с привязкой к идентификатору пользователя.`,
+    note:'Документально подтверждённый факт распространения данных — ключевое доказательство.' },
+  { id:'expert', no:'Том II, л. 2', title:'Заключение судебно-технической экспертизы', teaser:'Анализ характера собранных данных.',
+    relevant:true, body:`Эксперт установил, что собираемые показатели позволяют идентифицировать субъекта и характеризуют его физиологические особенности, что по своей природе сближает их с <span class="law">биометрическими ПДн (ст. 11 ФЗ-152)</span>. Прямого законодательного отнесения нейроданных к самостоятельной категории не имеется.`,
+    note:'Экспертиза обосновывает применение режима биометрических данных по аналогии закона.' },
+  { id:'contract', no:'Том II, л. 33', title:'Договор с рекламным партнёром', teaser:'Соглашение ответчика с третьим лицом.',
+    relevant:true, body:`Договор предусматривает возмездную передачу «обезличенных поведенческих профилей». Сопоставление с журналами (Том I, л. 19) показывает, что обезличивание фактически не производилось, данные передавались с идентификаторами.`,
+    note:'Опровергает довод ответчика об обезличивании — данные оставались персональными.' },
+  { id:'medcard', no:'Том III, л. 8', title:'Медицинская карта истца', teaser:'Сведения о состоянии здоровья.',
+    relevant:false, body:`Содержит общие сведения о состоянии здоровья истца за предшествующий период. Прямой причинно-следственной связи с предметом иска не усматривается; относимость <span class="law">(ст. 59 ГПК РФ)</span> сомнительна, существует риск необоснованного раскрытия врачебной тайны.`,
+    note:'Документ малорелевантен и сопряжён с риском раскрытия врачебной тайны — приобщать нецелесообразно.' },
+  { id:'ads', no:'Том III, л. 21', title:'Скриншоты таргетированной рекламы', teaser:'Реклама, демонстрировавшаяся истцу.',
+    relevant:true, body:`Скриншоты фиксируют рекламные объявления, тематически совпадающие с эмоциональными состояниями истца в конкретные периоды. Подтверждают использование нейроданных в коммерческих целях и причинение нравственных страданий <span class="law">(ст. 151 ГК РФ)</span>.`,
+    note:'Связывает обработку данных с конкретным вредом — основание компенсации морального вреда.' }
 ];
 
-/* ===================== DATA (15) ===================== */
-var NPCS=[
-  { name:"Майя", role:"Продавец VR‑очков «ЭмоВижн»", device:"🥽", color:"#3f8f88", principle:CORE.consent,
-    offer:"Возьмите наши VR‑очки бесплатно! Они считывают ваши эмоции и подстраивают всё под настроение. Мы лишь сохраняем данные о ваших чувствах на серверах — сущий пустяк, не правда ли?",
-    question:"Очки бесплатны, но постоянно собирают данные о ваших эмоциях и шлют их компании. Каким будет верное заключение?",
-    hint:"Эмоции — очень личные данные. Ключевое слово — согласие.",
-    options:[ {text:"Согласиться: раз очки бесплатные, данные можно отдать.", correct:false},
-      {text:"Потребовать ясного согласия на сбор нейроданных и право в любой момент отказаться.", correct:true},
-      {text:"Не тревожиться: эмоции — это не личные данные.", correct:false} ],
-    explanation:"Эмоции и сигналы мозга — особо чувствительные данные. Собирать их можно лишь с ясного согласия, и человек вправе отказаться. «Бесплатно» часто значит «платишь своими данными»." },
-
-  { name:"Георгий", role:"Директор по персоналу", device:"🎧", color:"#b06a2f", principle:CORE.privacy,
-    offer:"Отличное решение для бизнеса! Все сотрудники будут носить нейрошлемы — я увижу, кто сосредоточен, а кто отвлёкся, и даже о чём думает в рабочее время.",
-    question:"Работодатель хочет обязать сотрудников весь день носить нейрошлемы, читающие внимание и мысли. Допустимо ли это?",
-    hint:"Даже на работе мысли остаются личными.",
-    options:[ {text:"Да, на работе у человека нет права на тайну мыслей.", correct:false},
-      {text:"Нет: постоянное чтение мыслей нарушает ментальную приватность даже на работе.", correct:true},
-      {text:"Да, ведь компания платит зарплату.", correct:false} ],
-    explanation:"Право на ментальную приватность сохраняется и на работе. Постоянно «читать» мысли — чрезмерное вмешательство. Допустим лишь ограниченный мониторинг, с согласия и при веской причине." },
-
-  { name:"Марта", role:"Менеджер соцсети «Пульс»", device:"📱", color:"#a24070", principle:CORE.freedom,
-    offer:"Суперпредложение! Дайте доступ к вашим нейроданным из VR‑очков — мы продадим их рекламодателям, а вы получите скидку 20%. Все в выигрыше!",
-    question:"Соцсеть предлагает продавать ваши нейроданные рекламодателям в обмен на скидку. Что посоветует советник?",
-    hint:"А можно ли вообще продавать мысли, как товар?",
-    options:[ {text:"Продать — скидка же выгодна.", correct:false},
-      {text:"Отказаться: нейроданные нельзя свободно продавать — это угроза свободе мысли.", correct:true},
-      {text:"Продать, но только данные друзей.", correct:false} ],
-    explanation:"Превращение мыслей в товар угрожает когнитивной свободе. Сигналы мозга раскрывают самое личное, поэтому их продажа должна быть строго ограничена законом." },
-
-  { name:"Марк", role:"Разработчик VR‑платформы для школ", device:"🎒", color:"#3f7a3a", principle:CORE.minors,
-    offer:"Моя гордость — VR‑очки для уроков! Они следят за мозговой активностью школьников и сами ставят оценки за внимательность.",
-    question:"Платформа хочет через VR‑очки с ЭЭГ отслеживать внимание школьников и ставить оценки. Что особенно важно учесть?",
-    hint:"Дети — особый случай. Кто должен разрешать сбор их данных?",
-    options:[ {text:"У детей нет права на приватность — следить можно свободно.", correct:false},
-      {text:"Нужна особая защита: согласие родителей, минимум данных и запрет наказывать за «мысли».", correct:true},
-      {text:"Достаточно, чтобы платформа была популярной.", correct:false} ],
-    explanation:"Дети — особо уязвимая группа. Их нейроданные требуют согласия родителей, строгой минимизации и прозрачности. Оценивать по «мозговой активности» опасно и несправедливо." },
-
-  { name:"Самсон", role:"Нейромаркетолог", device:"🎯", color:"#7a4bb0", principle:CORE.will,
-    offer:"Гениальная технология! Через VR‑очки мы незаметно подталкиваем мозг покупателя к нужным решениям. Человек думает, что выбрал сам.",
-    question:"Технология скрытно влияет на решения человека, подталкивая мозг к покупкам. В чём главная опасность?",
-    hint:"Кто на самом деле принимает решение — человек или технология?",
-    options:[ {text:"Опасности нет — это просто умная реклама.", correct:false},
-      {text:"Она нарушает свободу воли и право самому принимать решения без скрытых манипуляций.", correct:true},
-      {text:"Опасна лишь высокая цена технологии.", correct:false} ],
-    explanation:"Скрытое влияние на решения нарушает свободу воли. Человек должен сам управлять выбором, а любое воздействие на мозг обязано быть прозрачным и добровольным." },
-
-  { name:"Генри", role:"Студия VR‑игр «НейроПлей»", device:"🎮", color:"#4a6fb0", principle:CORE.consent,
-    offer:"Наша игра сохраняет ваши нейроданные навсегда — а потом мы используем их в новых проектах, о которых вы пока и не знаете. Удобно же!",
-    question:"Компания хочет бессрочно хранить нейроданные и позже применять их для новых, необъявленных целей. Что верно?",
-    hint:"Согласие давалось под конкретную цель. А хранение — навсегда?",
-    options:[ {text:"Пусть хранят вечно и используют как угодно — данные уже собраны.", correct:false},
-      {text:"Данные можно использовать лишь для заявленной цели, хранить не дольше нужного, а на новое — спрашивать заново.", correct:true},
-      {text:"Ничего страшного, если пользователю не сообщать.", correct:false} ],
-    explanation:"Согласие всегда даётся под конкретную цель. Использовать данные для новых целей и хранить их бессрочно нельзя — нужны ограничение цели, срок хранения и новое согласие." },
-
-  { name:"Тереза", role:"Страховой агент", device:"📊", color:"#9a7b3a", principle:CORE.privacy,
-    offer:"Передайте нам ваши нейроданные — по вашим эмоциям и мыслям мы точно рассчитаем «риск» и назначим тариф. Кому нечего скрывать, тот не против!",
-    question:"Страховая хочет по нейроданным определять тарифы и решать, кому отказать. Как это оценить?",
-    hint:"Речь о приватности мыслей и о риске дискриминации.",
-    options:[ {text:"Пусть используют — это честный расчёт риска.", correct:false},
-      {text:"Недопустимо: это вторжение в ментальную приватность и путь к дискриминации по мыслям.", correct:true},
-      {text:"Можно, если тариф станет чуть ниже.", correct:false} ],
-    explanation:"Использование нейроданных для тарифов и отказов — грубое вторжение в приватность и почва для дискриминации. Такие данные нельзя превращать в инструмент против самого человека." },
-
-  { name:"Эвелина", role:"Городская администрация", device:"🏙️", color:"#3f7f9a", principle:CORE.privacy,
-    offer:"Установим на улицах сканеры настроения! Будем читать эмоции прохожих без лишних формальностей — ради «безопасности и комфорта города».",
-    question:"Власти хотят массово сканировать эмоции людей на улицах без их ведома. Что скажет советник?",
-    hint:"Публичное место — не повод отменять тайну внутреннего мира.",
-    options:[ {text:"Раз это улица, согласие не нужно.", correct:false},
-      {text:"Скрытое массовое чтение эмоций нарушает ментальную приватность и требует строгих рамок и согласия.", correct:true},
-      {text:"Можно, если данные «обезличены» — и никого не спрашивать.", correct:false} ],
-    explanation:"Ментальная приватность действует и в публичных местах. Тайное массовое считывание эмоций недопустимо: нужны закон, прозрачность, строгие ограничения и, как правило, согласие." },
-
-  { name:"Борис", role:"Владелец завода", device:"⚙️", color:"#7a5a3a", principle:CORE.freedom,
-    offer:"Вживите «чип концентрации» — станете работать быстрее! Кто откажется вживлять — того на работу не возьмём. Прогресс, знаете ли.",
-    question:"Работодатель требует вживить чип, усиливающий мозг, как условие приёма на работу. Допустимо ли принуждение?",
-    hint:"Речь о праве сохранить свой разум неизменным.",
-    options:[ {text:"Допустимо: не хочешь чип — не работай здесь.", correct:false},
-      {text:"Нет: никого нельзя принуждать менять или «улучшать» свой мозг — это часть когнитивной свободы.", correct:true},
-      {text:"Допустимо, если чип совсем маленький.", correct:false} ],
-    explanation:"Право сохранять свой разум неизменным — часть когнитивной свободы. Принуждать к вживлению или «улучшению» мозга нельзя, тем более как условие работы." },
-
-  { name:"Инженер Василий", role:"Стартап «ЧистыйРазум»", device:"💭", color:"#8a4bb0", principle:CORE.freedom,
-    offer:"За небольшую плату сотрём ваши неприятные воспоминания — станете счастливее! Немного подправим и пару мыслей заодно, чтоб наверняка.",
-    question:"Сервис предлагает стирать и подправлять воспоминания и мысли клиента. Как это оценить с точки зрения права?",
-    hint:"Память и психика — это целостность личности.",
-    options:[ {text:"Прекрасно — пусть стирают всё лишнее.", correct:false},
-      {text:"Вмешательство в память и мысли угрожает целостности разума и допустимо лишь при строжайших гарантиях и согласии.", correct:true},
-      {text:"Можно менять мысли человека без его ведома, если «ради счастья».", correct:false} ],
-    explanation:"Целостность психики — основа личности. Стирать или изменять память и мысли без строжайших гарантий и осознанного согласия недопустимо: это посягательство на сам разум." },
-
-  { name:"Елизавета", role:"Менеджер приложения «Забота+»", device:"🔔", color:"#b06a6a", principle:CORE.minors,
-    offer:"Приложение для пожилых по нейроданным ловит минуты растерянности — и именно тогда предлагает «выгодные» покупки. Продажи взлетают!",
-    question:"Сервис использует нейроданные пожилых, чтобы подталкивать к покупкам в моменты слабости. Что верно?",
-    hint:"Пожилые в такие моменты — особо уязвимы.",
-    options:[ {text:"Это удачный маркетинг, ничего плохого.", correct:false},
-      {text:"Это эксплуатация уязвимых: манипуляции по нейроданным недопустимы, нужна усиленная защита.", correct:true},
-      {text:"Допустимо, если товары действительно «выгодные».", correct:false} ],
-    explanation:"Пожилые и люди в уязвимом состоянии заслуживают усиленной защиты. Ловить «минуты слабости» по нейроданным ради продаж — недопустимая манипуляция." },
-
-  { name:"«ИгроМир»", role:"Производитель детских игрушек", device:"🧸", color:"#c08a2f", principle:CORE.minors,
-    offer:"Наша VR‑игрушка потихоньку записывает нейроданные детей и продаёт их рекламодателям. Родителям знать не обязательно — им же меньше хлопот!",
-    question:"Детская VR‑игрушка тайно собирает нейроданные детей для рекламы. Как поступить?",
-    hint:"Детские нейроданные + реклама + тайно — тревожное сочетание.",
-    options:[ {text:"Пусть собирают — дети всё равно не поймут.", correct:false},
-      {text:"Запретить: собирать детские нейроданные для рекламы нельзя; нужны согласие родителей и минимизация.", correct:true},
-      {text:"Можно, если игрушка красивая и популярная.", correct:false} ],
-    explanation:"Тайный сбор детских нейроданных, тем более для рекламы, недопустим. Требуются согласие родителей, строгая минимизация и полная прозрачность." },
-
-  { name:"Илья", role:"Политтехнолог", device:"🗳️", color:"#4a7a5a", principle:CORE.will,
-    offer:"Через VR мы незаметно подтолкнём избирателей голосовать «правильно». Они будут уверены, что решили сами. Изящно, не так ли?",
-    question:"Кампания хочет скрытно влиять на выбор избирателей через воздействие на мозг. Что скажет советник?",
-    hint:"Свободный выбор — основа честного решения.",
-    options:[ {text:"Допустимо: побеждает тот, кто хитрее.", correct:false},
-      {text:"Недопустимо: скрытое влияние на выбор нарушает свободу воли и подрывает честность решения.", correct:true},
-      {text:"Можно, если подталкивать «совсем чуть‑чуть».", correct:false} ],
-    explanation:"Скрытое нейровоздействие на выбор лишает человека автономии решения. Свобода воли требует, чтобы любое влияние было открытым и добровольным." },
-
-  { name:"«Натан»", role:"Основатель приложения знакомств", device:"💘", color:"#b0466a", principle:CORE.will,
-    offer:"Наше приложение лёгкими импульсами усиливает вашу симпатию к платным профилям. Любовь по подписке — гениально же!",
-    question:"Сервис через нейростимуляцию усиливает чувства пользователя к нужным профилям. В чём проблема?",
-    hint:"Речь о власти над вашими собственными чувствами.",
-    options:[ {text:"Проблемы нет — так удобнее находить пару.", correct:false},
-      {text:"Тайное воздействие на чувства нарушает свободу воли и автономию — нужны прозрачность и согласие.", correct:true},
-      {text:"Допустимо, ведь пользователь всё равно доволен.", correct:false} ],
-    explanation:"Управлять чувствами человека без его ведома — значит лишать его автономии. Любое воздействие на эмоции должно быть открытым и добровольным." },
-
-  { name:"Семён", role:"Научный институт", device:"🔬", color:"#4f8f6f", principle:CORE.consent,
-    offer:"Вы согласились дать нейроданные для исследования памяти. Мы решили заодно передать их партнёру‑рекламодателю — вы ведь уже подписали!",
-    question:"Данные, собранные для науки, хотят передать рекламодателю без нового согласия. Правомерно ли это?",
-    hint:"Согласие было дано под одну конкретную цель.",
-    options:[ {text:"Раз согласие есть, данные можно передавать кому угодно.", correct:false},
-      {text:"Нет: данные для науки нельзя перенаправлять на рекламу без нового, отдельного согласия.", correct:true},
-      {text:"Можно, если партнёр «надёжный».", correct:false} ],
-    explanation:"Согласие всегда привязано к цели. Передача научных нейроданных рекламодателю — новая цель, а значит, нужно новое, отдельное и осознанное согласие." }
+const NORMS = [
+  { id:'k23', nm:'ст. 23 Конституции РФ', ds:'Право на неприкосновенность частной жизни, личную тайну.', weight:6, correct:true,
+    fb:'Верно. Конституционная основа защиты приватности нейроданных.' },
+  { id:'k24', nm:'ст. 24 Конституции РФ', ds:'Запрет сбора и использования информации о частной жизни без согласия.', weight:6, correct:true,
+    fb:'Верно. Прямо запрещает обработку без согласия субъекта.' },
+  { id:'fz152', nm:'ФЗ № 152-ФЗ «О персональных данных»', ds:'Режим обработки, в т.ч. биометрических данных (ст. 9, 11).', weight:8, correct:true,
+    fb:'Верно. Центральная норма: согласие, обезличивание, биометрия.' },
+  { id:'gk1522', nm:'ст. 152.2 ГК РФ', ds:'Охрана частной жизни гражданина.', weight:6, correct:true,
+    fb:'Верно. Гражданско-правовая охрана частной жизни.' },
+  { id:'gk1064', nm:'ст. 1064 ГК РФ', ds:'Общие основания ответственности за причинение вреда.', weight:5, correct:true,
+    fb:'Верно. Деликтное основание.' },
+  { id:'gk151', nm:'ст. 151 ГК РФ', ds:'Компенсация морального вреда.', weight:5, correct:true,
+    fb:'Верно. Обоснование требования о компенсации.' },
+  { id:'uk137', nm:'ст. 137 УК РФ', ds:'Нарушение неприкосновенности частной жизни (уголовная).', weight:0, correct:'debate',
+    fb:'Спорно. Уголовно-правовая квалификация в гражданском иске избыточна и преждевременна — самостоятельной убедительности позиции не добавляет.' },
+  { id:'zpp', nm:'Закон РФ «О защите прав потребителей»', ds:'Отношения по оказанию услуг.', weight:0, correct:'debate',
+    fb:'Спорно. Применимо к качеству услуги, но не к существу нарушения тайны частной жизни.' },
+  { id:'uk222', nm:'ст. 222 УК РФ', ds:'Незаконный оборот оружия.', weight:-6, correct:false,
+    fb:'Ошибка. Норма не имеет ни малейшего отношения к предмету спора; ссылка подрывает убеждение суда о профессионализме представителя Истца.' }
 ];
-NPCS.forEach(function(n,i){ n.x=NPC_X[i]; n.answered=false; n.locked=false; });
 
-/* ===================== STATE ===================== */
-var reduceMotion = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || false;
-var mode='start', currentNPC=0, targetIndex=0, score=0, answeredCount=0, hintCount=0, cam=0;
-var adv={x:120, vx:0, facing:1, walkPhase:0};
-var particles=[];
-
-/* ===================== CANVAS ===================== */
-var gameCanvas=document.getElementById('game');
-var fxCanvas=document.getElementById('fx');
-var g=gameCanvas.getContext('2d');
-var fx=fxCanvas.getContext('2d');
-var DPR=Math.min(window.devicePixelRatio||1,2);
-var fxW=window.innerWidth, fxH=window.innerHeight;
-gameCanvas.width=VIEW_W*DPR; gameCanvas.height=VIEW_H*DPR; g.setTransform(DPR,0,0,DPR,0,0);
-function fxResize(){ DPR=Math.min(window.devicePixelRatio||1,2); fxW=window.innerWidth; fxH=window.innerHeight;
-  fxCanvas.width=Math.round(fxW*DPR); fxCanvas.height=Math.round(fxH*DPR); fx.setTransform(DPR,0,0,DPR,0,0); }
-fxResize(); window.addEventListener('resize', fxResize);
-
-/* ===================== HELPERS ===================== */
-function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
-function pseudo(n){ var x=Math.sin(n*127.1+311.7)*43758.5453; return x-Math.floor(x); }
-function hexA(hex,a){ var c=hex.replace('#',''); if(c.length===3){c=c[0]+c[0]+c[1]+c[1]+c[2]+c[2];} var n=parseInt(c,16);
-  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
-function shade(hex,amt){ var c=hex.replace('#',''); if(c.length===3){c=c[0]+c[0]+c[1]+c[1]+c[2]+c[2];} var n=parseInt(c,16);
-  var r=clamp(((n>>16)&255)+amt,0,255), gg=clamp(((n>>8)&255)+amt,0,255), b=clamp((n&255)+amt,0,255);
-  return 'rgb('+r+','+gg+','+b+')'; }
-function rr(c,x,y,w,h,r){ if(c.roundRect){ c.beginPath(); c.roundRect(x,y,w,h,r); return; }
-  r=Math.min(r,w/2,h/2); c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
-  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
-function firstUnanswered(){ for(var i=0;i<NPCS.length;i++){ if(!NPCS[i].answered) return i; } return -1; }
-
-/* ===================== WORLD GEN ===================== */
-var columns=[], pictures=[], motes=[];
-var PIC_LABELS=['ВЕСЫ ПРАВОСУДИЯ','ФЕМИДА','МОЛОТОК СУДЬИ','СВОД ЗАКОНОВ','ПЕРО ЗАКОНА','ХАРТИЯ ПРАВ','ДВОРЕЦ СУДА','СОВА МУДРОСТИ','ВЕНОК ЧЕСТИ','ПЕЧАТЬ','ЗАЩИТА ДАННЫХ','ПРАВО НА РАЗУМ'];
-function genWorld(){
-  columns=[]; for(var x=120;x<WORLD_W+220;x+=360) columns.push(x);
-  var gaps=columns.length-1, N=PIC_LABELS.length; pictures=[]; var lastGi=-1;
-  for(var i=0;i<N;i++){ var gi=Math.round(i*(gaps-1)/(N-1)); if(gi<=lastGi) gi=lastGi+1; if(gi>=gaps) break; lastGi=gi;
-    pictures.push({x:(columns[gi]+columns[gi+1])/2, type:i}); }
-  motes=[]; for(var m=0;m<18;m++) motes.push({x:pseudo(m*4.4)*VIEW_W, y:120+pseudo(m*6.1)*(GROUND_Y-150), s:1+pseudo(m)*1.6, vy:0.12+pseudo(m*2.7)*0.28, a:0.10+pseudo(m*3.3)*0.16});
-}
-genWorld();
-
-/* ===================== BACKGROUND ===================== */
-function drawBackground(){
-  var now=performance.now();
-  var wall=g.createLinearGradient(0,0,0,GROUND_Y);
-  wall.addColorStop(0,'#0f2a20'); wall.addColorStop(0.6,'#173a2c'); wall.addColorStop(1,'#1c4433');
-  g.fillStyle=wall; g.fillRect(0,0,VIEW_W,GROUND_Y);
-  var dado=GROUND_Y-96;
-  g.fillStyle='#123023'; g.fillRect(0,dado,VIEW_W,GROUND_Y-dado);
-  g.strokeStyle=hexA('#c9a24a',.35); g.lineWidth=2; g.beginPath(); g.moveTo(0,dado); g.lineTo(VIEW_W,dado); g.stroke();
-  g.strokeStyle=hexA('#c9a24a',.10); g.lineWidth=1;
-  for(var px=(-(cam*0.5)%120); px<VIEW_W; px+=120){ g.beginPath(); g.moveTo(px,dado+8); g.lineTo(px,GROUND_Y-6); g.stroke(); }
-
-  drawColumns(0.5); drawSconces(0.5, now);
-  if(!reduceMotion) drawMotes();
-  drawFloor(now);
-}
-function drawColumns(p){
-  for(var i=0;i<columns.length;i++){ var sx=columns[i]-cam*p; if(sx<-40||sx>VIEW_W+40) continue;
-    var top=58, baseY=GROUND_Y-96, w=30;
-    var gr=g.createLinearGradient(sx-w/2,0,sx+w/2,0);
-    gr.addColorStop(0,'#b9ad8f'); gr.addColorStop(0.5,'#efe7d0'); gr.addColorStop(1,'#a99d80');
-    g.fillStyle=gr; g.fillRect(sx-w/2, top+12, w, baseY-(top+12));
-    g.strokeStyle='rgba(120,108,80,.35)'; g.lineWidth=1;
-    for(var f=-2;f<=2;f++){ g.beginPath(); g.moveTo(sx+f*6, top+14); g.lineTo(sx+f*6, baseY-2); g.stroke(); }
-    g.fillStyle='#e7dfc6'; rr(g,sx-w/2-7, top+2, w+14, 12, 2); g.fill();
-    g.fillStyle='#d3c8a6'; rr(g,sx-w/2-3, top+11, w+6, 5, 1); g.fill();
-    g.fillStyle='#e7dfc6'; rr(g,sx-w/2-8, baseY-12, w+16, 12, 2); g.fill();
+const TRIAL = [
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Нейроданные не отнесены законом к биометрическим персональным данным. Поскольку самостоятельной категории не существует, режим Федерального закона № 152-ФЗ к ним неприменим, а значит нарушения нет.',
+    options:[
+      { t:'Согласиться, что специальной нормы нет, и ходатайствовать о применении аналогии закона: нейроданные идентифицируют субъекта и характеризуют его физиологию, что соответствует признакам биометрических данных (ст. 11 ФЗ-152).',
+        q:1, vl:'Юридически корректное преодоление пробела через ст. 6 ГК РФ.' },
+      { t:'Заявить, что отсутствие специальной нормы означает полный запрет любой обработки нейроданных.',
+        q:0, vl:'Чрезмерное и необоснованное утверждение; правом не подкреплено.' },
+      { t:'Настаивать, что данные являются биометрическими, не приводя обоснования их природы.',
+        q:.5, vl:'Тезис верный по существу, но голословный без ссылки на экспертизу.' }
+    ]
+  },
+  {
+    who:'Председательствующий', role:'judge', av:'С',
+    line:'Представитель истца, ответчик ссылается на пункт 7.3 пользовательского соглашения как на полученное согласие. Чем вы опровергаете наличие согласия на обработку?',
+    options:[
+      { t:'Согласие по п. 7.3 не является конкретным и информированным (ст. 9 ФЗ-152): термин «нейроданные» в тексте отсутствует, передача третьим лицам и использование в рекламе прямо не охватываются.',
+        q:1, vl:'Точное применение требований к юридической силе согласия.' },
+      { t:'Истец не читал соглашение, следовательно оно его не связывает.',
+        q:0, vl:'Несостоятельно, так как непрочтение соглашения не влияет на его юридическую силу.' },
+      { t:'Согласие отозвано истцом, поэтому обсуждать его содержание не требуется.',
+        q:.5, vl:'Отзыв согласия значим, но не отвечает на вопрос о его изначальной действительности.' }
+    ]
+  },
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Даже если данные обрабатывались, они передавались партнёру в обезличенном виде, в форме поведенческих профилей, а потому персональными более не являлись.',
+    options:[
+      { t:'Журналы передачи (Том I, л. 19) и договор (Том II, л. 33) подтверждают: данные выгружались с привязкой к идентификатору пользователя — фактического обезличивания не производилось.',
+        q:1, vl:'Опора на приобщённые доказательства опровергает довод фактически.' },
+      { t:'Обезличивание в принципе технически невозможно, поэтому довод ложен.',
+        q:.5, vl:'Декларативное утверждение и технически неточно; убедительнее опираться на материалы дела.' },
+      { t:'Вопрос обезличивания не имеет правового значения для дела.',
+        q:0, vl:'Ошибочно: именно обезличивание определяет режим данных.' }
+    ]
+  },
+  {
+    who:'Председательствующий', role:'judge', av:'С',
+    line:'Чем обосновано требование о компенсации морального вреда? Суд должен видеть причинно-следственную связь между нарушением и страданиями истца.',
+    options:[
+      { t:'Скриншоты таргетированной рекламы (Том III, л. 21) соотносятся с эмоциональными состояниями истца; неправомерное использование нейроданных причинило нравственные страдания (ст. 151, 1064 ГК РФ).',
+        q:1, vl:'Связь нарушения, вреда и нормы выстроена логически полно.' },
+      { t:'Моральный вред презюмируется при любом нарушении и доказывания не требует.',
+        q:.5, vl:'Презумпция применяется ограниченно; связь всё же надлежит обосновать.' },
+      { t:'Размер компенсации следует определить максимальным ввиду тяжести нарушения.',
+        q:0, vl:'Преждевременно и немотивированно; не отвечает на вопрос о связи.' }
+    ]
+  },
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Технологии нейроинтерфейсов служат общественному благу. Удовлетворение иска создаст препятствия для инноваций в Российской Федерации.',
+    options:[
+      { t:'Защита прав человека и развитие технологий не противопоставлены: правомерная обработка на основе действительного согласия закону не противоречит. Предметом спора является нарушение, а не технология как таковая.',
+        q:1, vl:'Снимает ложную дихотомию, возвращая суд к существу спора.' },
+      { t:'Интересы инноваций не подлежат учёту при защите конституционных прав.',
+        q:.5, vl:'Верно по приоритету, но категоричность ослабляет взвешенность позиции.' },
+      { t:'Развитие технологий действительно важнее, и иск стоит ограничить.',
+        q:0, vl:'Уступка, противоречащая интересам доверителя.' }
+    ]
   }
-}
-function drawSconces(p,now){
-  for(var i=0;i<columns.length;i++){ var sx=columns[i]-cam*p; if(sx<-60||sx>VIEW_W+60) continue;
-    var y=GROUND_Y-150, flick= reduceMotion?1:(0.82+0.18*Math.sin(now/130+columns[i]));
-    var lg=g.createRadialGradient(sx,y,4,sx,y,72);
-    lg.addColorStop(0,hexA('#f0c368',0.36*flick)); lg.addColorStop(1,hexA('#f0c368',0));
-    g.fillStyle=lg; g.beginPath(); g.arc(sx,y,72,0,7); g.fill();
-    g.strokeStyle='#8a6d2f'; g.lineWidth=3; g.lineCap='round'; g.beginPath(); g.moveTo(sx,y+16); g.lineTo(sx,y+2); g.stroke();
-    g.fillStyle='#c9a24a'; rr(g,sx-6,y-4,12,7,2); g.fill();
-    g.fillStyle=hexA('#ffe0a0',flick); g.beginPath(); g.ellipse(sx,y-8,3.2,5.5,0,0,7); g.fill();
-    var pool=g.createRadialGradient(sx,GROUND_Y+8,4,sx,GROUND_Y+8,88);
-    pool.addColorStop(0,hexA('#f0c368',0.14*flick)); pool.addColorStop(1,hexA('#f0c368',0));
-    g.save(); g.translate(sx,GROUND_Y+8); g.scale(1,0.26); g.fillStyle=pool; g.beginPath(); g.arc(0,0,88,0,7); g.fill(); g.restore();
-  }
-}
-function drawMotes(){ var now=performance.now(); g.fillStyle='#e6c66a';
-  for(var i=0;i<motes.length;i++){ var m=motes[i]; g.globalAlpha=m.a*(0.6+0.4*Math.sin(now/900+m.x)); g.beginPath(); g.arc(m.x,m.y,m.s,0,7); g.fill(); }
-  g.globalAlpha=1; }
-function updateMotes(dt){ for(var i=0;i<motes.length;i++){ var m=motes[i]; m.y-=m.vy*dt; if(m.y<110){ m.y=GROUND_Y-40; m.x=Math.random()*VIEW_W; } } }
-function drawFloor(now){
-  var fgd=g.createLinearGradient(0,GROUND_Y,0,VIEW_H);
-  fgd.addColorStop(0,'#3a1614'); fgd.addColorStop(1,'#1e0d0b');
-  g.fillStyle=fgd; g.fillRect(0,GROUND_Y,VIEW_W,VIEW_H-GROUND_Y);
-  g.strokeStyle=hexA('#c9a24a',.7); g.lineWidth=2; g.beginPath(); g.moveTo(0,GROUND_Y); g.lineTo(VIEW_W,GROUND_Y); g.stroke();
-  g.strokeStyle=hexA('#c9a24a',.28); g.lineWidth=1; g.beginPath(); g.moveTo(0,GROUND_Y+7); g.lineTo(VIEW_W,GROUND_Y+7); g.stroke();
-  g.fillStyle=hexA('#c9a24a',.16);
-  var step=120, start=Math.floor(cam/step)*step;
-  for(var wx=start; wx<cam+VIEW_W+step; wx+=step){ var x=wx-cam; var cy=GROUND_Y+ (VIEW_H-GROUND_Y)*0.55;
-    g.save(); g.translate(x,cy); g.rotate(Math.PI/4); g.fillRect(-4,-4,8,8); g.restore(); }
-  var gl=g.createLinearGradient(0,GROUND_Y,0,GROUND_Y+30);
-  gl.addColorStop(0,'rgba(240,195,104,.10)'); gl.addColorStop(1,'rgba(240,195,104,0)');
-  g.fillStyle=gl; g.fillRect(0,GROUND_Y,VIEW_W,30);
-}
+];
 
-/* ===================== WALL PAINTINGS ===================== */
-function drawPaintings(p){
-  for(var i=0;i<pictures.length;i++){ var pc=pictures[i]; var sx=pc.x-cam*p; if(sx<-70||sx>VIEW_W+70) continue;
-    drawPainting(sx, pc.type); }
-}
-function drawPainting(sx, type){
-  var W=104, H=90, y0=116, cx=sx;
-  // frame
-  g.fillStyle='#7a5f28'; rr(g,cx-W/2-4,y0-4,W+8,H+8,3); g.fill();
-  g.fillStyle='#c9a24a'; rr(g,cx-W/2-1.5,y0-1.5,W+3,H+3,2); g.fill();
-  g.fillStyle='#e9dfc4'; g.fillRect(cx-W/2,y0,W,H);
-  var sh=g.createLinearGradient(0,y0,0,y0+H); sh.addColorStop(0,'rgba(0,0,0,.10)'); sh.addColorStop(0.2,'rgba(0,0,0,0)'); g.fillStyle=sh; g.fillRect(cx-W/2,y0,W,H);
-  // icon area
-  var iy=y0+9, ih=H-30, icy=iy+ih/2;
-  var INK='#33291c', GLD='#b8862f', BUR='#7d2f2c', EMR='#215339', STN='#b7b0a0';
-  g.save(); g.lineJoin='round'; g.lineCap='round';
-  if(type===0){ // Scales
-    g.strokeStyle=INK; g.lineWidth=2.4; g.beginPath(); g.moveTo(cx,iy+6); g.lineTo(cx,iy+ih-8); g.stroke();
-    g.fillStyle=INK; g.beginPath(); g.moveTo(cx-9,iy+ih-6); g.lineTo(cx+9,iy+ih-6); g.lineTo(cx,iy+ih-14); g.closePath(); g.fill();
-    g.beginPath(); g.arc(cx,iy+9,2.4,0,7); g.fill();
-    g.beginPath(); g.moveTo(cx-22,iy+13); g.lineTo(cx+22,iy+13); g.stroke();
-    var py=iy+31; g.lineWidth=1.2; [-22,22].forEach(function(dx){ g.beginPath(); g.moveTo(cx+dx,iy+13); g.lineTo(cx+dx-6,py); g.moveTo(cx+dx,iy+13); g.lineTo(cx+dx+6,py); g.stroke();
-      g.fillStyle=GLD; g.beginPath(); g.arc(cx+dx,py,7,0,Math.PI); g.fill(); g.strokeStyle=INK; g.beginPath(); g.arc(cx+dx,py,7,0,Math.PI); g.stroke(); g.strokeStyle=INK; });
-  } else if(type===1){ // Themis
-    g.fillStyle=STN; g.beginPath(); g.moveTo(cx-11,iy+22); g.lineTo(cx+11,iy+22); g.lineTo(cx+15,iy+ih-4); g.lineTo(cx-15,iy+ih-4); g.closePath(); g.fill();
-    g.strokeStyle='rgba(90,80,60,.5)'; g.lineWidth=1; g.beginPath(); g.moveTo(cx,iy+22); g.lineTo(cx,iy+ih-4); g.stroke();
-    g.fillStyle='#dcae86'; g.beginPath(); g.arc(cx,iy+14,7,0,7); g.fill();
-    g.fillStyle=BUR; g.fillRect(cx-7,iy+12,14,3); // blindfold
-    g.strokeStyle=STN; g.lineWidth=3; g.beginPath(); g.moveTo(cx,iy+24); g.lineTo(cx+16,iy+20); g.stroke(); // arm to scales
-    g.strokeStyle=INK; g.lineWidth=1.4; g.beginPath(); g.moveTo(cx+9,iy+18); g.lineTo(cx+23,iy+18); g.stroke();
-    g.fillStyle=GLD; g.beginPath(); g.arc(cx+9,iy+22,3,0,Math.PI); g.fill(); g.beginPath(); g.arc(cx+23,iy+22,3,0,Math.PI); g.fill();
-    g.strokeStyle=GLD; g.lineWidth=2; g.beginPath(); g.moveTo(cx-16,iy+16); g.lineTo(cx-16,iy+34); g.stroke(); // sword
-  } else if(type===2){ // Gavel
-    g.save(); g.translate(cx-2,icy-6); g.rotate(-0.5);
-    g.fillStyle='#6e4a22'; rr(g,-8,-9,16,18,3); g.fill(); g.fillStyle=GLD; g.fillRect(-8,-9,16,3); g.fillRect(-8,6,16,3);
-    g.fillStyle='#6e4a22'; rr(g,-2.5,8,5,26,2); g.fill(); g.restore();
-    g.fillStyle='#5a3b1c'; rr(g,cx-16,iy+ih-10,32,7,2); g.fill(); g.fillStyle=GLD; g.fillRect(cx-16,iy+ih-10,32,1.5);
-  } else if(type===3){ // Open book (code of laws)
-    g.fillStyle='#f7f1df';
-    g.beginPath(); g.moveTo(cx,iy+8); g.lineTo(cx-30,iy+14); g.lineTo(cx-30,iy+ih-6); g.lineTo(cx,iy+ih-12); g.closePath(); g.fill();
-    g.beginPath(); g.moveTo(cx,iy+8); g.lineTo(cx+30,iy+14); g.lineTo(cx+30,iy+ih-6); g.lineTo(cx,iy+ih-12); g.closePath(); g.fill();
-    g.strokeStyle='rgba(120,100,60,.55)'; g.lineWidth=0.9;
-    for(var r=0;r<4;r++){ var yy=iy+20+r*7; g.beginPath(); g.moveTo(cx-26,yy); g.lineTo(cx-5,yy-1.5); g.moveTo(cx+5,yy-1.5); g.lineTo(cx+26,yy); g.stroke(); }
-    g.strokeStyle=INK; g.lineWidth=1.4; g.beginPath(); g.moveTo(cx,iy+8); g.lineTo(cx,iy+ih-12); g.stroke();
-    g.fillStyle=BUR; g.fillRect(cx-1.5,iy+8,3,ih+2); // ribbon
-    g.strokeStyle=GLD; g.lineWidth=1.2; g.beginPath(); g.moveTo(cx-30,iy+14); g.lineTo(cx,iy+8); g.lineTo(cx+30,iy+14); g.stroke();
-  } else if(type===4){ // Quill & inkwell
-    g.fillStyle=INK; g.beginPath(); g.moveTo(cx-18,iy+ih-4); g.lineTo(cx-4,iy+ih-4); g.lineTo(cx-6,iy+ih-16); g.lineTo(cx-16,iy+ih-16); g.closePath(); g.fill();
-    g.fillStyle=BUR; g.beginPath(); g.ellipse(cx-11,iy+ih-16,6,2.4,0,0,7); g.fill();
-    g.save(); g.translate(cx-11,iy+ih-16); g.rotate(-0.85);
-    g.fillStyle='#f2ead4'; g.beginPath(); g.moveTo(0,0); g.quadraticCurveTo(6,-24,2,-40); g.quadraticCurveTo(-6,-24,0,0); g.closePath(); g.fill();
-    g.strokeStyle='rgba(120,100,60,.6)'; g.lineWidth=1; g.beginPath(); g.moveTo(0,-2); g.lineTo(2,-38); g.stroke(); g.restore();
-  } else if(type===5){ // Charter / scroll with seal
-    g.fillStyle='#f4ecd6'; rr(g,cx-30,iy+10,60,ih-24,3); g.fill();
-    g.fillStyle='#dcae86'; rr(g,cx-34,iy+8,8,ih-20,4); g.fill(); rr(g,cx+26,iy+8,8,ih-20,4); g.fill();
-    g.strokeStyle='rgba(120,100,60,.5)'; g.lineWidth=0.9; for(var s=0;s<4;s++){ var yy2=iy+18+s*6; g.beginPath(); g.moveTo(cx-24,yy2); g.lineTo(cx+24,yy2); g.stroke(); }
-    g.fillStyle=BUR; g.beginPath(); g.arc(cx,iy+ih-10,6,0,7); g.fill(); g.fillStyle=GLD; g.font='7px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('§',cx,iy+ih-10);
-  } else if(type===6){ // Courthouse
-    g.fillStyle=STN; g.fillRect(cx-30,iy+ih-8,60,6); g.fillRect(cx-26,iy+ih-13,52,6);
-    for(var c=0;c<4;c++){ var colx=cx-20+c*13.3; g.fillStyle='#cfc7b0'; g.fillRect(colx-3,iy+16,6,ih-28); }
-    g.fillStyle=STN; g.fillRect(cx-28,iy+12,56,5);
-    g.fillStyle='#cfc7b0'; g.beginPath(); g.moveTo(cx-30,iy+12); g.lineTo(cx+30,iy+12); g.lineTo(cx,iy); g.closePath(); g.fill();
-    g.strokeStyle=INK; g.lineWidth=1; g.beginPath(); g.moveTo(cx-30,iy+12); g.lineTo(cx+30,iy+12); g.lineTo(cx,iy); g.closePath(); g.stroke();
-  } else if(type===7){ // Owl of wisdom
-    g.fillStyle='#7a6a4a'; g.beginPath(); g.ellipse(cx,icy+2,15,19,0,0,7); g.fill();
-    g.fillStyle='#5f5238'; g.beginPath(); g.moveTo(cx-12,iy+6); g.lineTo(cx-4,iy+13); g.lineTo(cx-14,iy+15); g.closePath(); g.fill();
-    g.beginPath(); g.moveTo(cx+12,iy+6); g.lineTo(cx+4,iy+13); g.lineTo(cx+14,iy+15); g.closePath(); g.fill();
-    g.fillStyle='#f2ead4'; g.beginPath(); g.arc(cx-6,icy-4,6,0,7); g.fill(); g.beginPath(); g.arc(cx+6,icy-4,6,0,7); g.fill();
-    g.fillStyle=INK; g.beginPath(); g.arc(cx-6,icy-4,2.6,0,7); g.fill(); g.beginPath(); g.arc(cx+6,icy-4,2.6,0,7); g.fill();
-    g.fillStyle=GLD; g.beginPath(); g.moveTo(cx,icy-2); g.lineTo(cx-3,icy+3); g.lineTo(cx+3,icy+3); g.closePath(); g.fill();
-    g.fillStyle='#5a3b1c'; g.fillRect(cx-16,iy+ih-6,32,5); // perch/book
-  } else if(type===8){ // Laurel wreath
-    g.strokeStyle=EMR; g.lineWidth=2.4;
-    g.beginPath(); g.arc(cx,icy,20,Math.PI*0.55,Math.PI*1.45); g.stroke();
-    g.beginPath(); g.arc(cx,icy,20,Math.PI*1.55,Math.PI*0.45); g.stroke();
-    g.fillStyle=EMR; for(var a=0.6;a<=2.6;a+=0.28){ var lx=cx+Math.cos(a)*20, ly=icy+Math.sin(a)*20; g.save(); g.translate(lx,ly); g.rotate(a+Math.PI/2); g.beginPath(); g.ellipse(0,-4,2.4,5,0,0,7); g.fill(); g.restore();
-      var a2=Math.PI*2-a; var lx2=cx+Math.cos(a2)*20, ly2=icy+Math.sin(a2)*20; g.save(); g.translate(lx2,ly2); g.rotate(a2+Math.PI/2); g.beginPath(); g.ellipse(0,-4,2.4,5,0,0,7); g.fill(); g.restore(); }
-    g.fillStyle=BUR; g.beginPath(); g.moveTo(cx-4,icy+20); g.lineTo(cx,icy+15); g.lineTo(cx+4,icy+20); g.lineTo(cx,icy+26); g.closePath(); g.fill();
-  } else if(type===9){ // Wax seal
-    g.fillStyle=BUR; var R=17; g.beginPath();
-    for(var k=0;k<24;k++){ var ang=k/24*Math.PI*2, rr2=(k%2?R:R+3); var xx=cx+Math.cos(ang)*rr2, yy=icy+Math.sin(ang)*rr2; if(k===0)g.moveTo(xx,yy); else g.lineTo(xx,yy); } g.closePath(); g.fill();
-    g.strokeStyle='#5a211f'; g.lineWidth=1.4; g.beginPath(); g.arc(cx,icy,R-3,0,7); g.stroke();
-    g.fillStyle='#e6c66a'; g.font='bold 15px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('⚖',cx,icy+1);
-    g.strokeStyle=BUR; g.lineWidth=3; g.beginPath(); g.moveTo(cx-6,icy+R); g.lineTo(cx-9,iy+ih-2); g.moveTo(cx+6,icy+R); g.lineTo(cx+9,iy+ih-2); g.stroke();
-  } else if(type===10){ // Padlock (data protection)
-    g.strokeStyle='#8a6d2f'; g.lineWidth=4; g.beginPath(); g.arc(cx,iy+18,10,Math.PI,0); g.stroke();
-    g.fillStyle=GLD; rr(g,cx-15,iy+18,30,ih-26,4); g.fill();
-    g.strokeStyle='#7a5a1a'; g.lineWidth=1; rr(g,cx-15,iy+18,30,ih-26,4); g.stroke();
-    g.fillStyle=INK; g.beginPath(); g.arc(cx,iy+30,3.4,0,7); g.fill(); g.fillRect(cx-1.4,iy+30,2.8,10);
-  } else { // 11 Brain + shield (право на разум)
-    g.fillStyle=EMR; g.beginPath(); g.moveTo(cx-20,iy+6); g.lineTo(cx+20,iy+6); g.lineTo(cx+20,iy+ih-18); g.quadraticCurveTo(cx,iy+ih+2,cx-20,iy+ih-18); g.closePath(); g.fill();
-    g.strokeStyle=GLD; g.lineWidth=2; g.beginPath(); g.moveTo(cx-20,iy+6); g.lineTo(cx+20,iy+6); g.lineTo(cx+20,iy+ih-18); g.quadraticCurveTo(cx,iy+ih+2,cx-20,iy+ih-18); g.closePath(); g.stroke();
-    g.fillStyle='#f0e6cf'; g.beginPath(); g.ellipse(cx-4,icy-2,11,9,0,0,7); g.fill(); g.beginPath(); g.ellipse(cx+5,icy-2,7,8,0,0,7); g.fill();
-    g.strokeStyle=BUR; g.lineWidth=1.2; g.beginPath(); g.moveTo(cx-10,icy-4); g.quadraticCurveTo(cx-4,icy-8,cx-2,icy-2); g.quadraticCurveTo(cx-6,icy+2,cx-1,icy+5); g.stroke();
-    g.beginPath(); g.moveTo(cx+2,icy-6); g.quadraticCurveTo(cx+8,icy-2,cx+4,icy+3); g.stroke();
-  }
-  g.restore();
-  // plaque
-  g.fillStyle='#2a2012'; rr(g,cx-W/2+8,y0+H-19,W-16,15,2); g.fill();
-  g.fillStyle='#e6c66a'; g.font='bold 8.5px "Lora", serif'; g.textAlign='center'; g.textBaseline='middle';
-  g.fillText(PIC_LABELS[type]||'', cx, y0+H-11);
-  g.textAlign='start'; g.textBaseline='alphabetic';
+/* =========================================================
+   ЭКРАНЫ
+========================================================= */
+function render(html){ app.innerHTML=`<div class="sheet stage">${html}</div>`; window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ----- Титульный экран ----- */
+function screenTitle(){
+  topbar.style.visibility='hidden';
+  render(`
+    <div class="title-screen">
+      <div class="phase-tag" style="justify-content:center;border:none">Российская Федерация · суд первой инстанции</div>
+      <div class="grand">Дело о нейроданных<em>Гражданка Паничева против ООО «НейроМир»</em></div>
+      <div class="filigree"><i></i>
+        <svg width="26" height="26" viewBox="0 0 100 100"><g stroke="#4a1418" stroke-width="4" fill="none" stroke-linecap="round"><line x1="50" y1="20" x2="50" y2="74"/><line x1="26" y1="34" x2="74" y2="34"/><line x1="50" y1="74" x2="40" y2="84"/><line x1="50" y1="74" x2="60" y2="84"/></g></svg>
+        <i></i></div>
+      <div class="title-note">Обучающий интерактивный материал для слушателей Летней школы МГИМО «Цифровая трансформация правового пространства ЕАЭС» 
+ подготовлен доц. Е.К. Матевосовой</div>
+      <p class="lead">Вы — представитель истца. Вашему доверителю предстоит первый в практике процесс о незаконном использовании нейрофизиологических данных, собранных нейроинтерфейсом.</p>
+      <p class="small">Изучите материалы дела, дайте им верную правовую квалификацию и проведите судебные прения. От убедительности вашей правовой позиции зависит исход дела.</p>
+      <div class="actions" style="justify-content:center">
+        <button class="btn btn-primary" id="bStart">Принять поручение </button>
+        <button class="btn btn-ghost" id="bAbout">О правилах</button>
+      </div>
+      <div class="title-date">2 июля 2026 года</div>
+    </div>`);
+  document.getElementById('bStart').onclick=screenBriefing;
+  document.getElementById('bAbout').onclick=()=>openModal(`
+    <div class="mtag">Регламент игры</div>
+    <h3>Как ведётся процесс</h3>
+    <p style="font-size:16px">Игра проходит в четыре стадии: <b>изучение материалов</b>, <b>правовая квалификация</b>, <b>судебные прения</b> и <b>вынесение решения</b>.</p>
+    <ul class="clean">
+      <li>Шкала вверху отражает <b>убедительность вашей позиции</b> (0–100).</li>
+      <li>Приобщайте к делу относимые доказательства и отклоняйте сомнительные.</li>
+      <li>Выбирайте применимые нормы права; ошибочные ссылки ослабляют позицию.</li>
+      <li>В прениях подбирайте процессуально корректные и обоснованные ответы.</li>
+    </ul>
+    <div class="actions"><button class="btn btn-primary" onclick="closeModal()">Понятно</button></div>`);
 }
 
-/* ===================== ADVOCATE ===================== */
-function drawTopHat(cx, brimY){
-  g.fillStyle='#151515'; g.beginPath(); g.ellipse(cx,brimY,15,3.4,0,0,7); g.fill();
-  g.fillStyle='#1c1c1c'; rr(g,cx-9,brimY-13,18,14,2); g.fill();
-  g.fillStyle='#111'; g.beginPath(); g.ellipse(cx,brimY-13,9,2,0,0,7); g.fill();
-  g.fillStyle='#7d2f2c'; g.fillRect(cx-9,brimY-4,18,3);
-  g.fillStyle='#c9a24a'; g.fillRect(cx-9,brimY-4,18,1);
-  g.fillStyle='rgba(255,255,255,.06)'; rr(g,cx-7,brimY-12,3,12,1); g.fill();
-}
-function drawBook(x,y){
-  g.save(); g.translate(x,y);
-  g.fillStyle='#6e2b2b'; rr(g,-8,-11,17,22,2); g.fill();
-  g.fillStyle='#c9a24a'; g.fillRect(-8,-11,3,22);
-  g.fillStyle='#efe7d0'; g.fillRect(6,-10,3,20);
-  g.restore();
-}
-function drawAdvocate(){
-  var sx=Math.round(adv.x-cam), feetY=GROUND_Y, t=performance.now()/1000;
-  var bob=0, legF=0, legB=0, hem=0;
-  var moving=Math.abs(adv.vx)>0.2;
-  if(moving){ legF=Math.sin(adv.walkPhase)*9; legB=-legF; hem=Math.sin(adv.walkPhase)*3; }
-  else { bob=Math.sin(t*1.5)*1.0; }
-
-  g.save(); g.globalAlpha=0.30; g.fillStyle='#000'; g.beginPath(); g.ellipse(sx,feetY+5,23,5,0,0,7); g.fill(); g.restore();
-
-  g.save(); g.translate(sx, bob); g.scale(adv.facing,1);
-  var hipY=feetY-22, shY=hipY-44, headCY=shY-16, hairY=headCY-4;
-
-  g.lineCap='round'; g.strokeStyle='#20241f'; g.lineWidth=8;
-  g.beginPath(); g.moveTo(3,hipY); g.lineTo(3+legF*0.5,feetY); g.stroke();
-  g.beginPath(); g.moveTo(-3,hipY); g.lineTo(-3+legB*0.5,feetY); g.stroke();
-  g.fillStyle='#0f0d0b'; rr(g,3+legF*0.5-6,feetY-3,14,6,3); g.fill(); rr(g,-3+legB*0.5-8,feetY-3,14,6,3); g.fill();
-
-  g.fillStyle='#232b26';
-  g.beginPath(); g.moveTo(-15,shY); g.lineTo(15,shY); g.lineTo(19+hem,feetY-6); g.lineTo(-19+hem,feetY-6); g.closePath(); g.fill();
-  g.strokeStyle='#171d19'; g.lineWidth=1.4; g.beginPath(); g.moveTo(hem*0.3,shY+8); g.lineTo(hem*0.7,feetY-10); g.stroke();
-  g.fillStyle='#2f3d35'; g.beginPath(); g.moveTo(-10,shY+1); g.lineTo(-1,shY+3); g.lineTo(-5,shY+24); g.closePath(); g.fill();
-  g.beginPath(); g.moveTo(10,shY+1); g.lineTo(1,shY+3); g.lineTo(5,shY+24); g.closePath(); g.fill();
-  g.fillStyle='#c9a24a'; for(var bt=0;bt<4;bt++){ g.beginPath(); g.arc(hem*0.35, shY+17+bt*9, 1.6,0,7); g.fill(); }
-  g.fillStyle='#f4efe1'; g.beginPath(); g.moveTo(0,shY+2); g.lineTo(4,shY+7); g.lineTo(2,shY+21); g.lineTo(0,shY+16); g.lineTo(-2,shY+21); g.lineTo(-4,shY+7); g.closePath(); g.fill();
-
-  g.strokeStyle='#1c221d'; g.lineWidth=7; g.beginPath(); g.moveTo(0,shY+6); g.lineTo(-12,shY+22); g.stroke();
-
-  g.fillStyle='#e8c39e'; g.beginPath(); g.arc(0,headCY,12,0,7); g.fill();
-  g.fillStyle='#c9c4b6'; rr(g,-12,hairY,6,11,3); g.fill(); rr(g,7,hairY,5,11,3); g.fill();
-  drawTopHat(0, headCY-9);
-  g.strokeStyle='#c9a24a'; g.lineWidth=1.1; g.beginPath(); g.arc(4,headCY-1,3,0,7); g.stroke(); g.beginPath(); g.moveTo(7,headCY-1); g.lineTo(11,headCY-2); g.stroke();
-  g.fillStyle='#2a231a'; g.beginPath(); g.arc(4,headCY-1,1.2,0,7); g.fill();
-
-  g.strokeStyle='#232b26'; g.lineWidth=7; g.lineCap='round'; g.beginPath(); g.moveTo(0,shY+6); g.lineTo(13,shY+26); g.stroke();
-  g.fillStyle='#e8c39e'; g.beginPath(); g.arc(13,shY+26,3,0,7); g.fill();
-  drawBook(17,shY+26);
-  g.restore();
+/* ----- Брифинг ----- */
+function screenBriefing(){
+  State.phase='briefing';
+  topbar.style.visibility='visible';
+  render(`
+    <div class="phase-tag">Стадия I · Ознакомление с делом <span>Том I–III</span></div>
+    <h2>Фабула дела</h2>
+    <p class="lead">Гражданка Паничева на протяжении года пользовалась нейроинтерфейсом «ЭрудитЛинк» производства ООО «НейроМир».</p>
+    <p><span class="drop">У</span>стройство непрерывно фиксировало нейрофизиологические показатели пользователя: паттерны внимания, эмоциональные реакции, утомляемость. Истец полагает, что ответчик собирал эти сведения и передавал их рекламному партнёру в коммерческих целях без её действительного согласия, чем нарушил неприкосновенность её частной жизни.</p>
+    <p>Ответчик возражает, ссылаясь на пользовательское соглашение и утверждая, что нейроданные не отнесены законом к охраняемым категориям, а передаваемые сведения были обезличены.</p>
+    <hr class="rule">
+    <h3>Предмет иска</h3>
+    <ul class="clean">
+      <li>Признание обработки нейроданных истца незаконной.</li>
+      <li>Прекращение обработки и удаление собранных данных.</li>
+      <li>Компенсация морального вреда.</li>
+    </ul>
+    <p class="small">Ваша задача как представителя истца — собрать доказательственную базу и сформировать правовую позицию.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="go">Перейти к изучению материалов дела</button>
+      <button class="btn btn-ghost" id="back">Вернуться к титулу</button>
+    </div>`);
+  document.getElementById('go').onclick=screenEvidence;
+  document.getElementById('back').onclick=screenTitle;
 }
 
-/* ===================== PEOPLE ===================== */
-function drawNPC(n){
-  var sx=Math.round(n.x-cam); if(sx<-70||sx>VIEW_W+70) return;
-  var feetY=GROUND_Y, t=performance.now()/1000, bob=Math.sin(t*2+n.x)*4;
-  var grd=g.createRadialGradient(sx,feetY-55,4,sx,feetY-55,72);
-  grd.addColorStop(0,hexA(n.color,.22)); grd.addColorStop(1,hexA(n.color,0));
-  g.fillStyle=grd; g.beginPath(); g.arc(sx,feetY-55,72,0,7); g.fill();
-  g.save(); g.globalAlpha=.3; g.fillStyle='#000'; g.beginPath(); g.ellipse(sx,feetY+5,18,4.5,0,0,7); g.fill(); g.restore();
-
-  var hipY=feetY-19, shY=hipY-36, headCY=shY-13;
-  g.lineCap='round'; g.strokeStyle=shade(n.color,-46); g.lineWidth=7;
-  g.beginPath(); g.moveTo(sx,hipY); g.lineTo(sx-6,feetY); g.stroke();
-  g.beginPath(); g.moveTo(sx,hipY); g.lineTo(sx+6,feetY); g.stroke();
-  g.fillStyle=n.color;
-  g.beginPath(); g.moveTo(sx-11,shY); g.lineTo(sx+11,shY); g.lineTo(sx+15,feetY-4); g.lineTo(sx-15,feetY-4); g.closePath(); g.fill();
-  g.fillStyle=shade(n.color,24); g.beginPath(); g.moveTo(sx-11,shY); g.lineTo(sx-3,shY); g.lineTo(sx-7,feetY-4); g.lineTo(sx-15,feetY-4); g.closePath(); g.fill();
-  g.strokeStyle=shade(n.color,-26); g.lineWidth=6;
-  g.beginPath(); g.moveTo(sx,shY+5); g.lineTo(sx-12,shY+20); g.stroke();
-  g.beginPath(); g.moveTo(sx,shY+5); g.lineTo(sx+12,shY+20); g.stroke();
-  g.fillStyle='#e8c39e'; g.beginPath(); g.arc(sx,headCY,11,0,7); g.fill();
-  g.fillStyle=shade(n.color,-52); g.beginPath(); g.ellipse(sx,headCY-4,11,6,0,Math.PI,0); g.fill();
-  rr(g,sx-13,headCY-4,26,3,1); g.fill();
-  g.fillStyle='#2a231a'; g.beginPath(); g.arc(sx-4,headCY-1,1.4,0,7); g.fill(); g.beginPath(); g.arc(sx+4,headCY-1,1.4,0,7); g.fill();
-
-  g.font='22px serif'; g.textAlign='center'; g.textBaseline='middle';
-  g.fillText(n.device, sx, headCY-11-16+bob);
-  if(n.answered){
-    g.fillStyle='#2f6b45'; g.beginPath(); g.arc(sx+15,headCY-6,8,0,7); g.fill();
-    g.fillStyle='#eef7e6'; g.font='bold 12px "Lora", serif'; g.fillText('✓',sx+15,headCY-5);
-  } else {
-    var pulse=0.5+0.5*Math.sin(t*4);
-    g.fillStyle=hexA('#c9a24a',.95); g.beginPath(); g.arc(sx+15,headCY-6,8+pulse*1.5,0,7); g.fill();
-    g.fillStyle='#2a1c05'; g.font='bold 13px "Lora", serif'; g.fillText('?',sx+15,headCY-5);
-  }
-  g.textAlign='start'; g.textBaseline='alphabetic';
+/* ----- Доказательства ----- */
+function screenEvidence(){
+  State.phase='evidence';
+  const cards=EVIDENCE.map(e=>{
+    const cls=['ev'];
+    if(State.examined.has(e.id)) cls.push('seen');
+    if(State.admitted.has(e.id)) cls.push('admitted');
+    if(State.rejected.has(e.id)) cls.push('rejected');
+    const stamp = State.admitted.has(e.id)?'Приобщено':State.rejected.has(e.id)?'Отклонено':'';
+    return `<button class="${cls.join(' ')}" data-id="${e.id}">
+        <span class="stamp">${stamp}</span>
+        <div class="no">${e.no}</div>
+        <h4>${e.title}</h4><p>${e.teaser}</p>
+      </button>`;
+  }).join('');
+  render(`
+    <div class="phase-tag">Стадия II · Исследование доказательств <span id="cnt"></span></div>
+    <h2>Материалы дела</h2>
+    <p>Изучите каждый документ. По относимым доказательствам <span class="law">(ст. 59 ГПК РФ)</span> заявляйте ходатайство о приобщении к делу; сомнительные — отклоняйте. Проанализируйте соответствующие документы, чтобы перейти далее.</p>
+    <div class="grid">${cards}</div>
+    <div class="actions">
+      <button class="btn btn-primary" id="next">Перейти к правовой квалификации</button>
+      <span class="small" id="hint"></span>
+    </div>`);
+  document.querySelectorAll('.ev').forEach(b=>b.onclick=()=>evidenceModal(b.dataset.id));
+  updEvidence();
+}
+function updEvidence(){
+  const cnt=document.getElementById('cnt');
+  if(cnt) cnt.textContent=`Осмотрено: ${State.examined.size} из ${EVIDENCE.length}`;
+  const next=document.getElementById('next');
+  const hint=document.getElementById('hint');
+  const ready=State.examined.size>=4;
+  if(next){ next.disabled=!ready; }
+  if(hint) hint.textContent = '';
+  if(next) next.onclick=ready?screenQualification:null;
+}
+function evidenceModal(id){
+  const e=EVIDENCE.find(x=>x.id===id);
+  const firstSeen=!State.examined.has(id);
+  State.examined.add(id);
+  const decided = State.admitted.has(id)||State.rejected.has(id);
+  openModal(`
+    <div class="mtag">${e.no} · вещественное доказательство</div>
+    <h3>${e.title}</h3>
+    <p style="font-size:16px">${e.body}</p>
+    ${decided?`<p class="small"><i>Решение по документу уже принято.</i></p>`:''}
+    <div class="actions">
+      <button class="btn btn-primary" id="adm" ${decided?'disabled':''}>Заявить ходатайство о приобщении</button>
+      <button class="btn btn-ghost" id="rej" ${decided?'disabled':''}>Отклонить документ</button>
+      <button class="btn btn-ghost" id="cls">Закрыть</button>
+    </div>`);
+  document.getElementById('cls').onclick=()=>{closeModal();screenEvidence();};
+  const adm=document.getElementById('adm'), rej=document.getElementById('rej');
+  if(adm) adm.onclick=()=>{
+    State.admitted.add(id);State.rejected.delete(id);
+    if(e.relevant){ setScore(+4); toast('Доказательство приобщено. '+e.note,7000); addLog('Приобщено: '+e.title); }
+    else { setScore(-3); toast('Документ приобщён, но он малорелевантен. '+e.note,7000); }
+    closeModal();screenEvidence();
+  };
+  if(rej) rej.onclick=()=>{
+    State.rejected.add(id);State.admitted.delete(id);
+    if(!e.relevant){ setScore(+3); toast('Верно. '+e.note,7000); addLog('Обоснованно отклонено: '+e.title); }
+    else { setScore(-4); toast('Вы отклонили относимое доказательство — позиция ослаблена.',7000); }
+    closeModal();screenEvidence();
+  };
 }
 
-/* ===================== LIBRARY DOOR ===================== */
-function drawFinish(){
-  var sx=Math.round(FINISH-cam); if(sx<-150||sx>VIEW_W+170) return;
-  var open=answeredCount>=NPCS.length, t=performance.now()/1000;
-  if(open){ var glow=g.createRadialGradient(sx,GROUND_Y-120,10,sx,GROUND_Y-120,160);
-    glow.addColorStop(0,hexA('#c9a24a',.30)); glow.addColorStop(1,hexA('#c9a24a',0)); g.fillStyle=glow; g.fillRect(sx-160,0,320,GROUND_Y+10); }
-  g.fillStyle='#8a6d2f'; rr(g,sx-52,GROUND_Y-210,104,204,6); g.fill();
-  g.fillStyle='#3a2a16'; rr(g,sx-44,GROUND_Y-200,88,194,4); g.fill();
-  g.fillStyle=open?'#5a3b20':'#3f2c18';
-  rr(g,sx-40,GROUND_Y-196,38,190,3); g.fill(); rr(g,sx+2,GROUND_Y-196,38,190,3); g.fill();
-  g.strokeStyle=hexA('#c9a24a',open?0.9:0.5); g.lineWidth=1.5;
-  g.strokeRect(sx-35,GROUND_Y-188,28,84); g.strokeRect(sx+7,GROUND_Y-188,28,84);
-  g.strokeRect(sx-35,GROUND_Y-98,28,88); g.strokeRect(sx+7,GROUND_Y-98,28,88);
-  g.fillStyle='#c9a24a'; g.beginPath(); g.arc(sx-6,GROUND_Y-100,2.4,0,7); g.fill(); g.beginPath(); g.arc(sx+6,GROUND_Y-100,2.4,0,7); g.fill();
-  var lf= open?(reduceMotion?1:0.82+0.18*Math.sin(t*4)):0.5;
-  g.fillStyle=hexA('#c9a24a',lf); g.font='22px serif'; g.textAlign='center'; g.textBaseline='middle';
-  g.fillText('⚖', sx, GROUND_Y-222);
-  g.fillStyle=open?'#e7dcc0':'#8a7c62'; rr(g,sx-40,GROUND_Y-150,80,22,3); g.fill();
-  g.fillStyle=open?'#3a2a16':'#33291c'; g.font='bold 10px "Lora", serif';
-  g.fillText('БИБЛИОТЕКА', sx, GROUND_Y-143); g.fillText('ПРАВА', sx, GROUND_Y-133);
-  g.textAlign='start'; g.textBaseline='alphabetic';
-}
-
-/* ===================== PARTICLES (fx) ===================== */
-function burstVictory(x,y,count){ for(var i=0;i<count;i++){ var a=Math.random()*Math.PI*2, sp=2+Math.random()*5;
-  if(Math.random()<0.4) particles.push({t:'spark',x:x,y:y,vx:Math.cos(a)*sp*0.7,vy:Math.sin(a)*sp*0.7-2,life:1,dec:0.018,size:2+Math.random()*2.5,c:'#e6c66a'});
-  else particles.push({t:'conf',x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,life:1,dec:0.008,rot:Math.random()*6.28,vr:(Math.random()-0.5)*0.5,w:4+Math.random()*5,h:5+Math.random()*6,grav:0.18,c:['#c9a24a','#e6c66a','#7d2f2c','#f4efe1'][(Math.random()*4)|0]}); }
-  if(particles.length>650) particles.splice(0,particles.length-650); }
-function updateParticles(dt){
-  for(var i=particles.length-1;i>=0;i--){ var p=particles[i];
-    if(p.t==='spark'){ p.vy+=0.06*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.life-=p.dec*dt; }
-    else if(p.t==='conf'){ p.vy+=p.grav*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.rot+=p.vr*dt; p.life-=p.dec*dt; }
-    if(p.life<=0||p.y>fxH+40||p.y<-60) particles.splice(i,1);
-  }
-}
-function drawParticles(){ fx.clearRect(0,0,fxW,fxH);
-  for(var i=0;i<particles.length;i++){ var p=particles[i]; var al=clamp(p.life,0,1);
-    if(p.t==='spark'){ fx.globalAlpha=al; fx.fillStyle=p.c; fx.beginPath(); fx.arc(p.x,p.y,p.size,0,7); fx.fill(); }
-    else if(p.t==='conf'){ fx.save(); fx.globalAlpha=al; fx.translate(p.x,p.y); fx.rotate(p.rot); fx.fillStyle=p.c; fx.fillRect(-p.w/2,-p.h/2,p.w,p.h); fx.restore(); }
-  }
-  fx.globalAlpha=1;
-}
-
-/* ===================== AUDIO ===================== */
-var audioCtx=null, muted=false;
-function initAudio(){ try{ if(!audioCtx){ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); } if(audioCtx.state==='suspended') audioCtx.resume(); }catch(e){} }
-function beep(freq,dur,type,vol,when){ if(muted||!audioCtx) return; type=type||'sine'; vol=vol||0.13; when=when||0;
-  try{ var t=audioCtx.currentTime+when, o=audioCtx.createOscillator(), gn=audioCtx.createGain();
-  o.type=type; o.frequency.value=freq; o.connect(gn); gn.connect(audioCtx.destination);
-  gn.gain.setValueAtTime(0.0001,t); gn.gain.linearRampToValueAtTime(vol,t+0.01); gn.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-  o.start(t); o.stop(t+dur+0.03); }catch(e){} }
-function sfx(type){ if(!audioCtx||muted) return;
-  if(type==='consult'){ beep(880,0.12,'sine',0.11); beep(660,0.12,'sine',0.09,0.07); }
-  else if(type==='correct'){ beep(659,0.14,'sine',0.14); beep(988,0.22,'sine',0.13,0.1); }
-  else if(type==='wrong'){ beep(196,0.2,'sine',0.1); beep(165,0.26,'sine',0.09,0.12); }
-  else if(type==='win'){ [523,659,784,1046,1319].forEach(function(f,i){ beep(f,0.22,'sine',0.13,i*0.12); }); }
-}
-
-/* ===================== FLOW ===================== */
-function setActions(on){ el('btnAnswer').disabled=!on; }
-function startWalkToNext(){ var n=firstUnanswered(); if(n>=0){ targetIndex=n; mode='walk'; } else { mode='walkHome'; } setActions(false); }
-
-/* ===================== GAME UPDATE ===================== */
-function updateGame(dt){
-  if(mode==='walk' || mode==='walkHome'){
-    var tx = (mode==='walkHome') ? FINISH : NPCS[targetIndex].x;
-    var stopDist = (mode==='walkHome') ? 28 : 48;
-    var d = tx - adv.x;
-    if(Math.abs(d) > stopDist){ adv.vx = MOVE*(d>0?1:-1); adv.facing = d>0?1:-1; adv.x += adv.vx*dt; adv.walkPhase += 0.3*dt; }
-    else {
-      adv.vx = 0;
-      if(mode==='walk'){ mode='atChar'; setActions(true); }
-      else { win(); return; }
-    }
-  } else { adv.vx = 0; }
-  adv.x=clamp(adv.x,40,WORLD_W-40);
-  cam=clamp(adv.x-VIEW_W*0.36,0,WORLD_W-VIEW_W);
-}
-
-/* ===================== RENDER LOOP ===================== */
-function render(){
-  g.clearRect(0,0,VIEW_W,VIEW_H);
-  drawBackground();
-  for(var i=0;i<NPCS.length;i++) drawNPC(NPCS[i]);
-  drawFinish(); drawAdvocate();
-  drawParticles();
-  updateHintText();
-}
-var last=performance.now();
-function loop(now){
-  var dt=(now-last)/16.667; last=now; if(dt>3) dt=3; if(dt<0) dt=0;
-  if(mode==='walk' || mode==='atChar' || mode==='walkHome') updateGame(dt);
-  if(!reduceMotion) updateMotes(dt);
-  updateParticles(dt);
-  render();
-  requestAnimationFrame(loop);
-}
-
-/* ===================== UI ===================== */
-var el=function(id){ return document.getElementById(id); };
-function showOverlay(id){ var ov=document.querySelectorAll('.overlay'); for(var i=0;i<ov.length;i++) ov[i].classList.add('hidden'); el(id).classList.remove('hidden'); }
-function hideOverlay(id){ el(id).classList.add('hidden'); }
-function hideAllOverlays(){ var ov=document.querySelectorAll('.overlay'); for(var i=0;i<ov.length;i++) ov[i].classList.add('hidden'); }
-function updateHUD(){
-  var total=NPCS.length;
-  el('barFill').style.width=(answeredCount/total*100)+'%';
-  el('progText').textContent='Ответы на вопросы '+answeredCount+'/'+total;
-  el('deducePill').textContent='✅ '+score;
-  el('hintPill').textContent='📖 '+hintCount;
-}
-function updateHintText(){ var h=el('hint');
-  if(mode==='walk'){ h.style.opacity=1; h.textContent='🚶 Советник направляется к: '+NPCS[targetIndex].name+'…'; }
-  else if(mode==='atChar'){ h.style.opacity=1; h.textContent='Советник у посетителя: '+NPCS[targetIndex].name+' — нажмите «Ответить на вопрос»'; }
-  else if(mode==='walkHome'){ h.style.opacity=1; h.textContent='📚 Советник идёт в библиотеку права…'; }
-  else { h.style.opacity=0; }
-}
-
-function openQuestion(i){ if(mode!=='atChar') return; var n=NPCS[i]; if(n.answered) return;
-  currentNPC=i; setActions(false); renderQuestion(i); mode='question'; showOverlay('questionScreen'); }
-function renderQuestion(i){
-  var n=NPCS[i]; n.locked=false;
-  el('questionCard').style.setProperty('--npc', n.color);
-  el('qCase').textContent='Вопрос № '+ (i + 1);
-  el('qDevice').textContent=n.device; el('qName').textContent=n.name; el('qRole').textContent=n.role;
-  el('qOffer').textContent=n.offer; el('qText').textContent=n.question;
-  var hb=el('qHintBtn'); hb.disabled=false; hb.textContent='📖 Подсказка';
-  var hn=el('qHintNote'); hn.className='hintnote hidden'; hn.textContent='';
-  var wrap=el('qOptions'); wrap.innerHTML='';
-  n.options.forEach(function(opt,idx){
-    var b=document.createElement('button'); b.className='opt'; b.type='button';
-    b.innerHTML='<span class="opt-key">'+String.fromCharCode(65+idx)+'</span><span class="opt-text">'+opt.text+'</span>';
-    b.addEventListener('click', function(){ chooseAnswer(i,idx); });
-    wrap.appendChild(b);
+/* ----- Квалификация ----- */
+function screenQualification(){
+  State.phase='qualification';
+  const list=NORMS.map(n=>`
+    <div class="norm ${State.norms.has(n.id)?'on':''}" data-id="${n.id}">
+      <div class="box">✓</div>
+      <div><div class="nm">${n.nm}</div><div class="ds">${n.ds}</div></div>
+    </div>`).join('');
+  render(`
+    <div class="phase-tag">Стадия III · Правовая квалификация <span>выбор норм</span></div>
+    <h2>Правовое основание иска</h2>
+    <p>Отметьте нормы права, на которых основывается позиция истца. Точная квалификация укрепляет позицию; ошибочные ссылки её ослабляют. Затем сформируйте правовую позицию.</p>
+    ${list}
+    <div class="actions">
+      <button class="btn btn-primary" id="form">Сформировать правовую позицию</button>
+      <button class="btn btn-ghost" id="back">Назад к материалам</button>
+    </div>`);
+  document.querySelectorAll('.norm').forEach(el=>el.onclick=()=>{
+    const id=el.dataset.id;
+    if(State.norms.has(id)){State.norms.delete(id);el.classList.remove('on');}
+    else{State.norms.add(id);el.classList.add('on');}
   });
-  var exp=el('qExplain'); exp.className='explain hidden'; exp.innerHTML='';
-  el('qContinue').classList.add('hidden');
+  document.getElementById('back').onclick=screenEvidence;
+  document.getElementById('form').onclick=evaluateQualification;
 }
-function revealPanelHint(){
-  var hb=el('qHintBtn'); if(hb.disabled) return; hb.disabled=true;
-  var hn=el('qHintNote'); hn.textContent='📖 '+NPCS[currentNPC].hint; hn.className='hintnote';
-  hintCount++; updateHUD(); sfx('consult');
+function evaluateQualification(){
+  if(State.norms.size===0){ toast('Необходимо избрать хотя бы одну норму права.'); return; }
+  let delta=0; const lines=[];
+  NORMS.forEach(n=>{
+    if(State.norms.has(n.id)){
+      delta+=n.weight;
+      const tag = n.correct===true?'win':n.correct==='debate'?'part':'loss';
+      lines.push(`<div class="opt ${tag}" style="cursor:default">
+        <b>${n.nm}</b><span class="verdict-line">${n.fb}</span></div>`);
+    }
+  });
+  setScore(delta);
+  State.qualificationDone=true;
+  addLog('Правовая позиция сформирована.');
+  render(`
+    <div class="phase-tag">Стадия III · Оценка квалификации <span>${delta>=0?'+':''}${delta} к убедительности</span></div>
+    <h2>Заключение по правовой позиции</h2>
+    <p>Суд оценит избранную вами совокупность норм следующим образом:</p>
+    ${lines.join('')}
+    <p class="small">Совет: ядро позиции по делам о приватности нейроданных образуют конституционные гарантии, режим персональных данных и гражданско-правовая охрана частной жизни.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="trial">Перейти к судебным прениям</button>
+      <button class="btn btn-ghost" id="redo">Пересмотреть квалификацию</button>
+    </div>`);
+  document.getElementById('trial').onclick=()=>{State.trialRound=0;State.trialAnswered=false;screenTrial();};
+  document.getElementById('redo').onclick=screenQualification;
 }
-function chooseAnswer(i,idx){
-  var n=NPCS[i]; if(n.locked) return; n.locked=true;
-  el('qHintBtn').disabled=true;
-  var correctIdx=n.options.findIndex(function(o){ return o.correct; });
-  var isCorrect=(idx===correctIdx);
-  var btns=el('qOptions').querySelectorAll('.opt');
-  for(var b=0;b<btns.length;b++){ btns[b].disabled=true; if(b===correctIdx) btns[b].classList.add('correct'); if(b===idx&&!isCorrect) btns[b].classList.add('wrong'); }
-  if(isCorrect){ score++; sfx('correct'); } else { sfx('wrong'); }
-  var exp=el('qExplain'); exp.className='explain';
-  exp.innerHTML='<span class="stamp '+(isCorrect?'ok':'no')+'">'+(isCorrect?'Верно':'Ошибочно')+'</span><p>'+n.explanation+'</p>';
-  el('qContinue').classList.remove('hidden');
-  updateHUD();
-}
-function continueAfter(){ var n=NPCS[currentNPC]; if(!n.locked) return; n.answered=true; answeredCount++; updateHUD(); hideOverlay('questionScreen'); startWalkToNext(); }
 
-function rankFor(s){
-  if(s>=15) return {t:'Магистр права', i:'⚖️'};
-  if(s>=12) return {t:'Старший советник', i:'🖋️'};
-  if(s>=9) return {t:'Правовед', i:'📜'};
-  if(s>=5) return {t:'Младший советник', i:'📖'};
-  return {t:'Стажёр', i:'📚'};
+/* ----- Прения ----- */
+function screenTrial(){
+  State.phase='trial';
+  const r=TRIAL[State.trialRound];
+  State.trialAnswered=false;
+  const opts=r.options.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join('');
+  render(`
+    <div class="phase-tag">Стадия IV · Судебные прения <span>Эпизод ${State.trialRound+1} из ${TRIAL.length}</span></div>
+    <div class="speaker">
+      <div class="badge ${r.role==='judge'?'judge':''}">${r.av}</div>
+      <div class="who">${r.role==='judge'?'Председательствующий':'Сторона ответчика'}<b>${r.who}</b></div>
+    </div>
+    <div class="quote">«${r.line}»</div>
+    <p class="small">Изберите процессуально корректный и юридически обоснованный ответ:</p>
+    <div id="opts">${opts}</div>
+    <div class="actions" id="trialAct"></div>`);
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answerTrial(parseInt(b.dataset.i)));
 }
-function buildVictory(){
-  var r=rankFor(score);
-  el('vRankIcon').textContent=r.i; el('vRank').textContent=r.t;
-  el('vScore').textContent=score+' из '+NPCS.length;
-  el('vScoreNote').textContent = score>=13?'Безупречно, коллега!':(score>=8?'Достойно — можно ещё отточить.':'Изучите проблематику внимательнее и попробуйте снова.');
-  var grid=el('vPrinciples'); grid.innerHTML='';
-  PROVISIONS.forEach(function(pr){ var c=document.createElement('div'); c.className='pcard';
-    c.innerHTML='<div class="pic">'+pr.icon+'</div><div class="ptitle">'+pr.title+'</div><div class="ptext">'+pr.text+'</div>';
-    grid.appendChild(c); });
+function answerTrial(i){
+  if(State.trialAnswered) return;
+  State.trialAnswered=true;
+  const r=TRIAL[State.trialRound];
+  const opt=r.options[i];
+  const delta = opt.q===1?10:opt.q===.5?4:-5;
+  setScore(delta);
+  const buttons=document.querySelectorAll('.opt');
+  buttons.forEach((b,idx)=>{
+    b.disabled=true;
+    const q=r.options[idx].q;
+    if(idx===i){
+      b.classList.add(q===1?'good':q===.5?'mid':'bad');
+      b.innerHTML+=`<span class="verdict-line">${r.options[idx].vl}</span>`;
+    } else if(q===1){
+      b.classList.add('good');
+      b.innerHTML+=`<span class="verdict-line">Наиболее сильный ответ: ${r.options[idx].vl}</span>`;
+    }
+  });
+  const last = State.trialRound>=TRIAL.length-1;
+  document.getElementById('trialAct').innerHTML=
+    `<button class="btn btn-primary" id="cont">${last?'Перейти к вынесению решения':'Следующий эпизод прений'}</button>
+     <span class="small">${delta>=10?'Возражение принято судом.':delta>0?'Ответ принят, но мог быть сильнее.':'Ответ ослабил позицию.'}</span>`;
+  document.getElementById('cont').onclick=()=>{
+    if(last){ screenVerdict(); }
+    else { State.trialRound++; screenTrial(); }
+  };
+  addLog(`Прения, эпизод ${State.trialRound+1}: ${delta>=0?'+':''}${delta}.`);
 }
-function win(){ if(mode==='win') return; mode='win'; setActions(false); buildVictory(); showOverlay('victoryScreen'); sfx('win'); burstVictory(fxW*0.5,fxH*0.28, reduceMotion?30:140); }
 
-function startGame(){ initAudio(); hideAllOverlays(); adv.x=120; adv.vx=0; adv.facing=1; targetIndex=firstUnanswered(); if(targetIndex<0) targetIndex=0; mode='walk'; setActions(false); }
+/* ----- Решение ----- */
+function screenVerdict(){
+  State.phase='verdict';
+  const s=State.score;
+  let cls,title,body;
+  if(s>=80){
+    cls='win';title='Иск удовлетворить в полном объёме';
+    body=`Суд признал обработку нейроданных истца незаконной, обязал ответчика прекратить обработку и удалить собранные сведения, а также взыскал компенсацию морального вреда в заявленном размере. Ваша правовая позиция оказалась безупречной: доказательственная база полна, квалификация точна, возражения ответчика отклонены.`;
+  } else if(s>=60){
+    cls='part';title='Иск удовлетворить частично';
+    body=`Суд признал нарушение и обязал ответчика прекратить обработку данных, однако размер компенсации морального вреда снижен. Позиция была убедительной, но отдельные доводы суд счёл недостаточно обоснованными.`;
+  } else if(s>=40){
+    cls='part';title='Иск удовлетворить в части неимущественных требований';
+    body=`Суд установил факт нарушения и обязал удалить данные, но во взыскании компенсации отказал ввиду недоказанности причинно-следственной связи. Доказательственная работа и квалификация требовали большей тщательности.`;
+  } else {
+    cls='loss';title='В удовлетворении иска отказать';
+    body=`Суд счёл доводы истца недостаточно обоснованными, а доказательственную базу — неполной. Слабая квалификация и процессуальные неточности не позволили опровергнуть возражения ответчика.`;
+  }
+  const pills=State.log.slice(-8).map(l=>`<span class="pill">${l}</span>`).join('');
+  render(`
+    <div class="phase-tag">Резолютивная часть · оглашение решения <span>убедительность: ${s}/100</span></div>
+    <div class="gavel-wrap">
+      <svg width="70" height="70" viewBox="0 0 100 100" aria-hidden="true">
+        <g stroke="#4a1418" stroke-width="5" stroke-linecap="round" fill="none">
+          <rect x="38" y="16" width="34" height="20" rx="3" transform="rotate(38 55 26)" fill="rgba(74,20,24,.1)"/>
+          <line x1="50" y1="34" x2="26" y2="64"/>
+          <line x1="20" y1="78" x2="54" y2="78"/>
+        </g>
+      </svg>
+    </div>
+    <div class="outcome ${cls}">${title}</div>
+    <div class="scorebox">Итоговая убедительность позиции — ${s} из 100</div>
+    <p>${body}</p>
+    <hr class="rule">
+    <h3>Процессуальный итог</h3>
+    <p class="small">Ключевые процессуальные действия по делу:</p>
+    <div class="pillrow">${pills||'<span class="pill">нет записей</span>'}</div>
+    <div class="actions">
+      <button class="btn btn-primary" id="again">Рассмотреть дело заново</button>
+      <button class="btn btn-ghost" id="why">Методический комментарий</button>
+    </div>`);
+  document.getElementById('again').onclick=resetGame;
+  document.getElementById('why').onclick=()=>openModal(`
+    <div class="mtag">Методический комментарий</div>
+    <h3>Правовой контекст дела</h3>
+    <p style="font-size:16px">На момент рассмотрения российское законодательство не выделяет нейроданные в самостоятельную категорию. Это образует <b>правовой пробел</b>, преодолеваемый через аналогию закона (ст. 6 ГК РФ): по своим признакам нейроданные сближаются с биометрическими персональными данными.</p>
+    <p style="font-size:16px">Опорой защиты служат конституционные гарантии приватности <span class="law">(ст. 23, 24)</span>, режим персональных данных <span class="law">(ФЗ-152)</span> и гражданско-правовая охрана частной жизни <span class="law">(ст. 152.2 ГК РФ)</span>.</p>
+    <div class="actions"><button class="btn btn-primary" onclick="closeModal()">Закрыть</button></div>`);
+}
+
+/* ----- Сброс ----- */
 function resetGame(){
-  score=0; answeredCount=0; hintCount=0;
-  NPCS.forEach(function(n){ n.answered=false; n.locked=false; });
-  adv.x=120; adv.vx=0; adv.facing=1; adv.walkPhase=0;
-  particles.length=0; cam=0;
-  updateHUD(); hideAllOverlays(); targetIndex=0; mode='walk'; setActions(false);
+  State.score=50;State.examined=new Set();State.admitted=new Set();State.rejected=new Set();
+  State.norms=new Set();State.qualificationDone=false;State.trialRound=0;State.trialAnswered=false;State.log=[];
+  setScore(0);
+  screenTitle();
 }
 
-/* ===================== INPUT ===================== */
-el('btnAnswer').addEventListener('click', function(){ initAudio(); if(mode==='atChar') openQuestion(targetIndex); });
-el('startBtn').addEventListener('click', startGame);
-el('qHintBtn').addEventListener('click', revealPanelHint);
-el('qContinue').addEventListener('click', continueAfter);
-el('replayBtn').addEventListener('click', resetGame);
-el('celebrateBtn').addEventListener('click', function(){ initAudio(); sfx('win'); burstVictory(fxW*0.5,fxH*0.3, reduceMotion?30:150); });
-el('muteBtn').addEventListener('click', function(){ muted=!muted; el('muteBtn').textContent=muted?'🔇':'🔊'; el('muteBtn').setAttribute('aria-pressed', muted); if(!muted) initAudio(); });
-
-window.addEventListener('keydown', function(e){
-  if(mode!=='atChar') return;
-  if(e.code==='Enter'||e.code==='Space'){ e.preventDefault(); initAudio(); openQuestion(targetIndex); }
-});
-
-/* ===================== BOOT ===================== */
-updateHUD(); showOverlay('startScreen'); setActions(false);
-requestAnimationFrame(loop);
-
-/* ===================== СВЕРКАЮЩИЕ НЕЙРОНЫ (титульный экран) ===================== */
+/* запуск */
+setScore(0);
+screenTitle();
+</script>
+<script>
+/* ===== Нейро-фон: окружает документ в багровом поле ===== */
 (function(){
-  var cv=document.getElementById('neuroCanvas'); if(!cv) return;
-  var ctx=cv.getContext('2d'), host=document.getElementById('startScreen');
-  var reduce=(typeof reduceMotion!=='undefined')?reduceMotion
-    :((window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)||false);
-  var W=0,H=0,DPR=1,nodes=[],links=[],sparks=[],mobile=false,t0=performance.now();
-  function rnd(a,b){return a+Math.random()*(b-a);}
+  const cv = document.getElementById('neuroField');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const TAU = Math.PI*2;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,DPR=1,nodes=[],pulses=[],waves=[],raf=0,t=0;
+  const rand=(a,b)=>a+Math.random()*(b-a);
 
-  /* кэш-спрайт мягкого золотого свечения */
-  var spr=document.createElement('canvas'); spr.width=spr.height=64;
-  (function(){var s=spr.getContext('2d'),g=s.createRadialGradient(32,32,0,32,32,32);
-    g.addColorStop(0,'rgba(255,246,214,1)'); g.addColorStop(.34,'rgba(230,198,106,.55)');
-    g.addColorStop(1,'rgba(230,198,106,0)'); s.fillStyle=g; s.beginPath(); s.arc(32,32,32,0,7); s.fill();})();
-  function glow(x,y,r,a){ ctx.globalAlpha=a<0?0:(a>1?1:a); ctx.drawImage(spr,x-r,y-r,r*2,r*2); ctx.globalAlpha=1; }
+  /* предрендер свечения (спрайты) — быстро и мягко */
+  function makeGlow(rgb){
+    const c=document.createElement('canvas');c.width=c.height=64;
+    const g=c.getContext('2d');
+    const rg=g.createRadialGradient(32,32,0,32,32,32);
+    rg.addColorStop(0,'rgba('+rgb+',1)');
+    rg.addColorStop(0.45,'rgba('+rgb+',0.45)');
+    rg.addColorStop(1,'rgba('+rgb+',0)');
+    g.fillStyle=rg;g.fillRect(0,0,64,64);
+    return c;
+  }
+  const glowAmber = makeGlow('230,200,120');
+  const glowCream = makeGlow('246,230,176');
+
+  const LINK = 132;
 
   function build(){
-    DPR=Math.min(window.devicePixelRatio||1,2);
-    W=window.innerWidth; H=window.innerHeight; mobile=W<860;
-    cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
-    cv.style.width=W+'px'; cv.style.height=H+'px';
+    const count = Math.max(46, Math.min(120, Math.round(W*H/13000)));
+    nodes=[];
+    for(let i=0;i<count;i++){
+      nodes.push({x:rand(0,W),y:rand(0,H),
+        vx:rand(-0.10,0.10),vy:rand(-0.10,0.10),
+        r:rand(0.8,2.0),hub:Math.random()<0.07,ph:rand(0,TAU)});
+    }
+    pulses=[];
+    waves=[
+      {y:H*0.085,amp:9, k:0.018,sp:0.6, ph:0},
+      {y:H*0.93, amp:11,k:0.014,sp:-0.45,ph:2}
+    ];
+  }
+  function resize(){
+    DPR=Math.min(2,window.devicePixelRatio||1);
+    W=window.innerWidth;H=window.innerHeight;
+    cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+    cv.style.width=W+'px';cv.style.height=H+'px';
     ctx.setTransform(DPR,0,0,DPR,0,0);
-    var target=Math.round((W*H)/(mobile?15000:8000));
-    var COUNT=Math.max(mobile?26:72, Math.min(mobile?80:210, target));
-    /* дрожащая сетка — равномерно заполняет всё пространство */
-    nodes=[]; var cols=Math.max(2,Math.round(Math.sqrt(COUNT*W/H)));
-    var rows=Math.max(2,Math.ceil(COUNT/cols)), cw=W/cols, ch=H/rows, id=0;
-    for(var r=0;r<rows;r++) for(var c=0;c<cols;c++){ if(id>=COUNT) break;
-      var hx=c*cw+cw*0.5+rnd(-cw*0.38,cw*0.38), hy=r*ch+ch*0.5+rnd(-ch*0.38,ch*0.38);
-      var dn=(Math.random()*3|0)+3, dend=[];
-      for(var k=0;k<dn;k++) dend.push({a:rnd(0,6.283),len:rnd(mobile?9:13,mobile?20:32),fk:rnd(.45,.8),fa:rnd(-.6,.6)});
-      nodes.push({hx:hx,hy:hy,x:hx,y:hy,r:rnd(1.5,3.3),ph:rnd(0,6.283),sp:rnd(.6,1.7),
-        wx:rnd(0,6.283),wy:rnd(0,6.283),wa:rnd(4,11),dend:dend,flash:0}); id++;
-    }
-    /* связи: k ближайших в пределах радиуса */
-    links=[]; var maxD=mobile?120:172,K=3,seen={};
-    for(var i=0;i<nodes.length;i++){ var cand=[];
-      for(var j=0;j<nodes.length;j++){ if(i===j) continue;
-        var dx=nodes[i].hx-nodes[j].hx,dy=nodes[i].hy-nodes[j].hy,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<maxD) cand.push({j:j,d:d}); }
-      cand.sort(function(a,b){return a.d-b.d;});
-      for(var m=0;m<Math.min(K,cand.length);m++){ var j=cand[m].j,key=Math.min(i,j)+'-'+Math.max(i,j);
-        if(seen[key]) continue; seen[key]=1; links.push({a:i,b:j,maxD:maxD}); }
-    }
-    sparks=[];
+    build();
+    if(reduce) draw(true);
   }
-  function spawn(){ if(!links.length) return; var l=links[(Math.random()*links.length)|0],d=Math.random()<.5;
-    sparks.push({a:d?l.a:l.b,b:d?l.b:l.a,t:0,sp:rnd(.5,1.15)}); }
+  function spawnPulse(){
+    if(pulses.length>22) return;
+    const a=nodes[(Math.random()*nodes.length)|0];
+    let best=null,bd=LINK;
+    for(const b of nodes){
+      if(b===a) continue;
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<bd){best=b;bd=d;if(Math.random()<0.5)break;}
+    }
+    if(best) pulses.push({a,b:best,t:0,sp:rand(0.006,0.015)});
+  }
+  function draw(stat){
+    ctx.clearRect(0,0,W,H);
 
-  function frame(now){ requestAnimationFrame(frame);
-    if(!host||host.classList.contains('hidden')) return;
-    var tt=(now-t0)/1000; ctx.clearRect(0,0,W,H);
-    for(var i=0;i<nodes.length;i++){ var n=nodes[i];
-      if(reduce){ n.x=n.hx; n.y=n.hy; }
-      else { n.x=n.hx+Math.sin(tt*.4+n.wx)*n.wa; n.y=n.hy+Math.cos(tt*.34+n.wy)*n.wa; }
-      if(n.flash>0) n.flash-=0.018; }
-    ctx.globalCompositeOperation='lighter';
-    /* синапсы */
-    ctx.lineWidth=1;
-    for(var li=0;li<links.length;li++){ var l=links[li],A=nodes[l.a],B=nodes[l.b];
-      var dx=A.x-B.x,dy=A.y-B.y,d=Math.sqrt(dx*dx+dy*dy),fade=1-Math.min(1,d/l.maxD);
-      var pulse=reduce?.6:(.55+.35*Math.sin(tt*1.1+li*.7));
-      var al=0.13*fade*pulse; if(al<=0.006) continue;
-      ctx.strokeStyle='rgba(214,182,112,'+al.toFixed(3)+')';
-      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke(); }
-    /* дендриты */
-    ctx.lineCap='round';
-    for(var i=0;i<nodes.length;i++){ var n=nodes[i],rot=reduce?0:Math.sin(tt*.2+n.ph)*.14;
-      for(var k=0;k<n.dend.length;k++){ var dd=n.dend[k],a=dd.a+rot;
-        var ex=n.x+Math.cos(a)*dd.len,ey=n.y+Math.sin(a)*dd.len;
-        ctx.strokeStyle='rgba(196,166,100,0.10)'; ctx.lineWidth=1.1;
-        ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(ex,ey); ctx.stroke();
-        var fx=n.x+Math.cos(a)*dd.len*dd.fk,fy=n.y+Math.sin(a)*dd.len*dd.fk;
-        ctx.strokeStyle='rgba(196,166,100,0.07)';
-        ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(fx+Math.cos(a+dd.fa)*dd.len*.4,fy+Math.sin(a+dd.fa)*dd.len*.4); ctx.stroke(); }
+    /* ЭЭГ-трассы сверху и снизу */
+    for(const w of waves){
+      ctx.beginPath();
+      for(let x=0;x<=W;x+=6){
+        const y=w.y+Math.sin(x*w.k+t*0.02*w.sp+w.ph)*w.amp
+                   +Math.sin(x*w.k*2.7+t*0.03*w.sp)*w.amp*0.35;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.lineWidth=1;ctx.strokeStyle='rgba(201,162,75,0.15)';ctx.stroke();
     }
-    /* тела-сомы: свечение + ядро (мерцание) */
-    for(var i=0;i<nodes.length;i++){ var n=nodes[i];
-      var tw=reduce?.7:(.5+.5*Math.sin(tt*n.sp+n.ph)),core=.5+.5*tw+n.flash;
-      glow(n.x,n.y,n.r*(3.4+2.4*tw)+n.flash*12,0.55*core);
-      ctx.fillStyle='rgba(255,249,228,'+Math.min(1,.6+.4*tw).toFixed(3)+')';
-      ctx.beginPath(); ctx.arc(n.x,n.y,n.r*(.9+.35*tw),0,7); ctx.fill(); }
-    /* бегущие импульсы-искры */
-    if(!reduce){ var want=Math.max(6,(nodes.length/4)|0);
-      while(sparks.length<want&&Math.random()<.5) spawn();
-      for(var s=sparks.length-1;s>=0;s--){ var sp=sparks[s]; sp.t+=sp.sp*0.016;
-        if(sp.t>=1){ nodes[sp.b].flash=1; sparks.splice(s,1); continue; }
-        var A=nodes[sp.a],B=nodes[sp.b],x=A.x+(B.x-A.x)*sp.t,y=A.y+(B.y-A.y)*sp.t;
-        glow(x,y,11,0.95);
-        ctx.fillStyle='rgba(255,253,240,0.95)'; ctx.beginPath(); ctx.arc(x,y,1.7,0,7); ctx.fill(); }
+
+    /* синаптические связи */
+    ctx.lineWidth=0.7;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j];
+        const dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+        if(d2<LINK*LINK){
+          const al=(1-Math.sqrt(d2)/LINK)*0.16;
+          ctx.strokeStyle='rgba(214,178,96,'+al.toFixed(3)+')';
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
     }
-    ctx.globalCompositeOperation='source-over';
+
+    /* импульсы вдоль связей */
+    for(let i=pulses.length-1;i>=0;i--){
+      const p=pulses[i];p.t+=stat?0:p.sp;
+      if(p.t>=1){pulses.splice(i,1);continue;}
+      const x=p.a.x+(p.b.x-p.a.x)*p.t, y=p.a.y+(p.b.y-p.a.y)*p.t;
+      ctx.globalAlpha=0.85*Math.sin(p.t*Math.PI);
+      ctx.drawImage(glowCream,x-9,y-9,18,18);
+      ctx.globalAlpha=1;
+    }
+
+    /* нейроны */
+    for(const n of nodes){
+      const pul=stat?0:(Math.sin(t*0.03+n.ph)*0.5+0.5);
+      const r=n.r+(n.hub?1.4:0);
+      const a=0.30+pul*0.32+(n.hub?0.15:0);
+      const s=(r*4+4);
+      ctx.globalAlpha=a;
+      ctx.drawImage(glowAmber,n.x-s,n.y-s,s*2,s*2);
+      ctx.globalAlpha=1;
+      ctx.fillStyle='rgba(246,232,184,'+Math.min(0.9,a+0.3).toFixed(3)+')';
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,TAU);ctx.fill();
+      if(n.hub){
+        ctx.strokeStyle='rgba(201,162,75,0.45)';ctx.lineWidth=0.8;
+        ctx.beginPath();ctx.arc(n.x,n.y,r*3.2,0,TAU);ctx.stroke();
+      }
+    }
   }
-  build();
-  var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(build,180); });
-  requestAnimationFrame(frame);
+  function step(){
+    t++;
+    for(const n of nodes){
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<-20)n.x=W+20;else if(n.x>W+20)n.x=-20;
+      if(n.y<-20)n.y=H+20;else if(n.y>H+20)n.y=-20;
+    }
+    if(t%26===0) spawnPulse();
+    draw(false);
+    raf=requestAnimationFrame(step);
+  }
+  resize();
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();if(!reduce)step();},{passive:true});
+  if(!reduce) step();
 })();
 </script>
 </body>
