@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обучающий интерактивный материал для слушателей Летней школы МГИМО «Цифровая трансформация правового пространства ЕАЭС»
+ </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211712;
+    --oxblood:#4a1418;
+    --oxblood-deep:#33090c;
+    --brass:#c9a24b;
+    --brass-bright:#e6c878;
+    --parchment:#efe6d2;
+    --parchment-2:#e4d6b8;
+    --parchment-line:#cdbb92;
+    --green:#3f6b4f;
+    --red:#8e2f29;
+    --shadow:rgba(20,6,8,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'EB Garamond',Georgia,serif;
+    color:var(--ink);
+    background:
+      radial-gradient(120% 80% at 50% -10%, #5a191e 0%, var(--oxblood) 38%, var(--oxblood-deep) 100%);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(0,0,0,.18), transparent 30%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity:.9;
+  }
+  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:46px 24px 96px}
+
+  /* ---------- Header / progress ---------- */
+  .topbar{display:flex;align-items:center;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+  .seal{flex:0 0 auto}
+  .court-id{flex:1 1 240px;min-width:200px}
+  .court-id .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--brass-bright)}
+  .court-id h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--parchment);
+    font-size:clamp(20px,3.4vw,30px);line-height:1.05;margin-top:3px}
+  .meter{flex:1 1 240px;min-width:200px}
+  .meter .lab{display:flex;justify-content:space-between;align-items:baseline;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--brass-bright);margin-bottom:6px}
+  .meter .lab b{font-size:14px;color:var(--parchment)}
+  .bar{height:9px;border:1px solid rgba(230,200,120,.5);border-radius:6px;
+    background:rgba(0,0,0,.3);overflow:hidden}
+  .bar i{display:block;height:100%;width:50%;border-radius:6px;
+    background:linear-gradient(90deg,#9b6a2a,var(--brass),var(--brass-bright));
+    transition:width .8s cubic-bezier(.2,.8,.2,1)}
+
+  /* ---------- Card / sheet ---------- */
+  .sheet{
+    background:
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") top 5px left 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%28150%2C0%29%20scale%28-1%2C1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") top 5px right 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%280%2C150%29%20scale%281%2C-1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") bottom 5px left 5px / 78px 78px no-repeat,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Cg%20transform%3D%22translate%28150%2C150%29%20scale%28-1%2C-1%29%22%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%20%3Cpath%20d%3D%22M15%2092%20L15%2027%20Q15%2015%2027%2015%20L92%2015%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.7%22%2F%3E%20%3Cpath%20d%3D%22M22%2086%20L22%2030%20Q22%2022%2030%2022%20L86%2022%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.9%22%2F%3E%20%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%224.2%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.1%22%2F%3E%20%3Cpath%20d%3D%22M92%2015%20C118%2011%20132%2023%20128%2042%20C125%2056%20111%2058%20105%2049%20C101%2043%20105%2034%20113%2037%20C117%2038%20117%2044%20114%2045%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M128%2042%20C135%2040%20140%2045%20139%2051%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M15%2092%20C11%20118%2023%20132%2042%20128%20C56%20125%2058%20111%2049%20105%20C43%20101%2034%20105%2037%20113%20C38%20117%2044%20117%2045%20114%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.5%22%2F%3E%20%3Cpath%20d%3D%22M42%20128%20C40%20135%2045%20140%2051%20139%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C48%2035%2057%2048%2060%2064%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C35%2048%2048%2057%2064%2060%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%221.2%22%2F%3E%20%3Cpath%20d%3D%22M33%2033%20L55%2055%22%20stroke%3D%22%23a8842f%22%20stroke-width%3D%220.8%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C44%2030%2050%2024%2047%2018%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3Cpath%20d%3D%22M30%2030%20C30%2044%2024%2050%2018%2047%22%20stroke%3D%22%234a1418%22%20stroke-width%3D%220.9%22%2F%3E%20%3C%2Fg%3E%20%3Cg%20fill%3D%22%23b8893a%22%20stroke%3D%22none%22%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2215%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2262%22%20cy%3D%2262%22%20r%3D%222.1%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") bottom 5px right 5px / 78px 78px no-repeat,
+      linear-gradient(180deg,var(--parchment),var(--parchment-2));
+    border:1px solid var(--parchment-line);
+    border-radius:5px;
+    box-shadow:0 26px 60px -28px var(--shadow), inset 0 1px 0 rgba(255,255,255,.5);
+    padding:38px clamp(22px,4vw,46px);
+    position:relative;
+  }
+  .sheet::after{content:"";position:absolute;inset:9px;border:1px solid rgba(74,20,24,.22);
+    border-radius:3px;pointer-events:none}
+  .sheet::before{content:"";position:absolute;inset:14px;border:1px solid rgba(168,132,47,.32);
+    border-radius:2px;pointer-events:none;z-index:0}
+  .stage{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  .phase-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--oxblood);
+    border-bottom:1px solid var(--parchment-line);padding-bottom:10px;margin-bottom:18px;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .phase-tag span{color:#7a5a33}
+  h2{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(26px,4.4vw,40px);
+    line-height:1.02;color:var(--oxblood);margin-bottom:14px;letter-spacing:.4px}
+  h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;color:var(--ink);margin:8px 0 6px}
+  p{font-size:17.5px;line-height:1.62;margin-bottom:14px;color:#332518}
+  p.lead{font-size:19.5px;font-style:italic;color:#4a392a}
+  .small{font-size:14px;color:#6a5238}
+  .law{font-family:'JetBrains Mono',monospace;font-size:.84em;background:rgba(74,20,24,.08);
+    border:1px solid rgba(74,20,24,.2);border-radius:3px;padding:1px 6px;color:var(--oxblood);white-space:nowrap}
+  hr.rule{border:none;border-top:1px solid var(--parchment-line);margin:20px 0}
+  .drop{float:left;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:62px;
+    line-height:.74;color:var(--oxblood);margin:6px 12px 0 0}
+
+  /* ---------- Buttons ---------- */
+  .btn{font-family:'EB Garamond',serif;font-size:16px;font-weight:600;cursor:pointer;
+    border:none;border-radius:4px;padding:13px 26px;letter-spacing:.02em;
+    transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;position:relative}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:linear-gradient(180deg,#5a181d,var(--oxblood));color:var(--parchment);
+    box-shadow:0 10px 22px -10px rgba(40,8,10,.8), inset 0 1px 0 rgba(255,255,255,.12)}
+  .btn-primary:hover{filter:brightness(1.12)}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:4px;
+    border:1px solid var(--brass);opacity:.55}
+  .btn-ghost{background:transparent;color:var(--oxblood);border:1px solid var(--oxblood)}
+  .btn-ghost:hover{background:rgba(74,20,24,.07)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.4)}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;align-items:center}
+
+  /* ---------- Title screen ---------- */
+  .title-screen{text-align:center;padding-top:8px}
+  .title-screen .grand{font-family:'Cormorant Garamond',serif;font-weight:700;
+    font-size:clamp(40px,9vw,82px);line-height:.94;color:var(--oxblood);letter-spacing:.5px}
+  .title-screen .grand em{font-style:italic;color:#7a2128;display:block;font-size:.5em;
+    font-weight:500;letter-spacing:.08em;margin-top:6px}
+  .title-note{
+    max-width:760px;margin:18px auto 16px;padding:15px 22px;
+    border:1px solid rgba(74,20,24,.26);border-radius:4px;
+    background:rgba(255,255,255,.32);
+    font-family:'Cormorant Garamond',serif;font-size:clamp(19px,2.7vw,25px);
+    line-height:1.22;color:var(--oxblood);font-weight:600;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .title-date{
+    margin:22px auto 0;font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#7a5a33;border-top:1px solid rgba(74,20,24,.22);
+    padding-top:14px;max-width:420px;
+  }
+  .filigree{display:flex;align-items:center;gap:14px;justify-content:center;margin:18px 0 8px;
+    color:var(--brass)}
+  .filigree i{height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--oxblood))}
+  .filigree i:last-child{background:linear-gradient(90deg,var(--oxblood),transparent)}
+
+  /* ---------- Evidence grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:8px}
+  .ev{background:rgba(255,255,255,.4);border:1px solid var(--parchment-line);border-radius:4px;
+    padding:16px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .2s,border-color .2s;
+    position:relative;overflow:hidden}
+  .ev:hover{transform:translateY(-3px);box-shadow:0 14px 26px -16px var(--shadow);border-color:var(--oxblood)}
+  .ev .no{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#8a6c44}
+  .ev h4{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;margin:5px 0 4px;color:var(--ink)}
+  .ev p{font-size:13.5px;line-height:1.4;margin:0;color:#5e4a36}
+  .ev.seen{border-color:var(--oxblood)}
+  .ev .stamp{position:absolute;top:9px;right:9px;font-family:'JetBrains Mono',monospace;
+    font-size:8.5px;letter-spacing:.12em;padding:2px 6px;border-radius:2px;text-transform:uppercase;opacity:0}
+  .ev.admitted .stamp{opacity:1;background:rgba(63,107,79,.16);color:var(--green);border:1px solid var(--green)}
+  .ev.rejected .stamp{opacity:1;background:rgba(142,47,41,.14);color:var(--red);border:1px solid var(--red)}
+
+  /* ---------- Selectable norms ---------- */
+  .norm{display:flex;gap:13px;align-items:flex-start;background:rgba(255,255,255,.38);
+    border:1px solid var(--parchment-line);border-radius:4px;padding:14px 16px;margin-bottom:11px;
+    cursor:pointer;transition:border-color .2s,background .2s,transform .12s}
+  .norm:hover{transform:translateX(3px);border-color:var(--oxblood)}
+  .norm .box{flex:0 0 auto;width:22px;height:22px;border:1.5px solid var(--oxblood);border-radius:3px;
+    margin-top:3px;display:grid;place-items:center;color:transparent;font-weight:700;transition:.18s}
+  .norm.on{background:rgba(74,20,24,.09);border-color:var(--oxblood)}
+  .norm.on .box{background:var(--oxblood);color:var(--parchment)}
+  .norm .nm{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;color:var(--ink)}
+  .norm .ds{font-size:14px;color:#5e4a36;margin-top:2px}
+
+  /* ---------- Trial dialogue ---------- */
+  .speaker{display:flex;gap:14px;margin-bottom:6px;align-items:center}
+  .badge{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:21px;
+    background:var(--oxblood);color:var(--parchment);box-shadow:0 6px 14px -8px var(--shadow)}
+  .badge.judge{background:#2b2b33}
+  .speaker .who{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:#7a5a33}
+  .speaker .who b{display:block;font-family:'Cormorant Garamond',serif;font-size:19px;
+    letter-spacing:0;text-transform:none;color:var(--ink)}
+  .quote{background:rgba(255,255,255,.45);border-left:3px solid var(--oxblood);border-radius:0 4px 4px 0;
+    padding:14px 18px;font-size:17px;font-style:italic;color:#3a2c1e;margin:4px 0 18px}
+  .opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.4);
+    border:1px solid var(--parchment-line);border-radius:4px;padding:14px 18px;margin-bottom:10px;
+    font-family:'EB Garamond',serif;font-size:16px;color:var(--ink);cursor:pointer;
+    transition:border-color .18s,background .18s,transform .12s;line-height:1.4}
+  .opt:hover:not(:disabled){border-color:var(--oxblood);transform:translateX(3px);background:rgba(74,20,24,.05)}
+  .opt:disabled{cursor:default}
+  .opt.good{border-color:var(--green);background:rgba(63,107,79,.12)}
+  .opt.mid{border-color:var(--brass);background:rgba(201,162,75,.14)}
+  .opt.bad{border-color:var(--red);background:rgba(142,47,41,.12)}
+  .opt .verdict-line{display:block;margin-top:9px;font-size:13.5px;font-style:italic;
+    padding-top:9px;border-top:1px dashed rgba(74,20,24,.25)}
+  .feedback{font-size:14px;color:#5e4a36;margin:4px 0 0}
+
+  /* ---------- Verdict ---------- */
+  .gavel-wrap{text-align:center;margin:6px 0 14px}
+  .outcome{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(26px,5vw,40px);
+    text-align:center;line-height:1.06;margin:6px 0 4px}
+  .outcome.win{color:var(--green)}
+  .outcome.part{color:#9b6a2a}
+  .outcome.loss{color:var(--red)}
+  .scorebox{font-family:'JetBrains Mono',monospace;text-align:center;font-size:12px;letter-spacing:.14em;
+    color:#7a5a33;text-transform:uppercase;margin-bottom:18px}
+
+  /* ---------- Log / pills ---------- */
+  .pillrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+    padding:4px 9px;border-radius:20px;border:1px solid rgba(74,20,24,.3);color:var(--oxblood);
+    background:rgba(255,255,255,.3)}
+
+  /* ---------- Modal ---------- */
+  .modal-bg{position:fixed;inset:0;z-index:50;background:rgba(20,5,7,.66);backdrop-filter:blur(3px);
+    display:none;place-items:center;padding:22px;animation:fade .25s ease}
+  .modal-bg.show{display:grid}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{max-width:520px;width:100%;background:linear-gradient(180deg,var(--parchment),var(--parchment-2));
+    border:1px solid var(--parchment-line);border-radius:6px;padding:30px;
+    box-shadow:0 40px 80px -30px #000;animation:rise .35s cubic-bezier(.2,.8,.2,1) both;
+    max-height:88vh;overflow:auto}
+  .modal .mtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    color:#8a6c44;text-transform:uppercase}
+  .modal h3{margin-top:4px}
+
+  /* ---------- Toast ---------- */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);
+    z-index:60;background:var(--ink);color:var(--parchment);padding:12px 22px;border-radius:30px;
+    font-size:14.5px;border:1px solid var(--brass);box-shadow:0 16px 40px -16px #000;
+    opacity:0;transition:.4s cubic-bezier(.2,.8,.2,1);pointer-events:none;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .foot{text-align:center;margin-top:22px;font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.16em;color:rgba(239,230,210,.45);text-transform:uppercase}
+  ul.clean{list-style:none}
+  ul.clean li{position:relative;padding-left:20px;margin-bottom:8px;font-size:16.5px;line-height:1.5;color:#3a2c1e}
+  ul.clean li::before{content:"§";position:absolute;left:0;color:var(--oxblood);font-weight:700}
+</style>
+</head>
+<body>
+<canvas id="neuroField" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
+<div class="wrap">
+
+  <!-- header -->
+  <div class="topbar" id="topbar" style="visibility:hidden">
+    <div class="seal">
+      <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#e6c878" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#c9a24b" stroke-width="0.8" stroke-dasharray="2 3"/>
+        <g stroke="#e6c878" stroke-width="2" fill="none" stroke-linecap="round">
+          <line x1="50" y1="22" x2="50" y2="70"/>
+          <line x1="30" y1="34" x2="70" y2="34"/>
+          <line x1="50" y1="70" x2="42" y2="78"/><line x1="50" y1="70" x2="58" y2="78"/>
+          <path d="M30 34 L22 52 A8 8 0 0 0 38 52 Z" fill="rgba(230,200,120,.12)"/>
+          <path d="M70 34 L62 52 A8 8 0 0 0 78 52 Z" fill="rgba(230,200,120,.12)"/>
+        </g>
+        <circle cx="50" cy="22" r="3" fill="#e6c878"/>
+      </svg>
+    </div>
+    <div class="court-id">
+      <div class="kicker">Симулятор судебного процесса</div>
+      <h1>Дело № 1001-А/2026 · о защите нейроданных</h1>
+    </div>
+    <div class="meter">
+      <div class="lab"><span>Правовая убедительность позиции</span><b id="scoreNum">50</b></div>
+      <div class="bar"><i id="bar"></i></div>
+    </div>
+  </div>
+
+  <!-- main render target -->
+  <div id="app"></div>
+
+  <div class="foot">Образовательная игра · вымышленное дело </div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   СОСТОЯНИЕ ИГРЫ
+========================================================= */
+const State = {
+  score: 50,
+  phase: 'title',
+  examined: new Set(),     // осмотренные материалы
+  admitted: new Set(),     // приобщённые к делу
+  rejected: new Set(),
+  norms: new Set(),        // выбранные нормы права
+  qualificationDone: false,
+  trialRound: 0,
+  trialAnswered: false,
+  log: []
+};
+
+const app = document.getElementById('app');
+const topbar = document.getElementById('topbar');
+
+/* ---------- утилиты ---------- */
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+function setScore(delta){
+  State.score = clamp(State.score+delta,0,100);
+  document.getElementById('scoreNum').textContent = State.score;
+  document.getElementById('bar').style.width = State.score+'%';
+}
+let toastTimer;
+function toast(msg,ms=2600){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),ms);
+}
+function addLog(s){ if(!State.log.includes(s)) State.log.push(s); }
+
+/* ---------- модальное окно ---------- */
+const modalBg=document.getElementById('modalBg');
+const modal=document.getElementById('modal');
+function openModal(html){ modal.innerHTML=html; modalBg.classList.add('show'); }
+function closeModal(){ modalBg.classList.remove('show'); }
+modalBg.addEventListener('click',e=>{ if(e.target===modalBg) closeModal(); });
+
+/* =========================================================
+   ДАННЫЕ ИГРЫ
+========================================================= */
+const EVIDENCE = [
+  { id:'eula', no:'Том I, л. 4', title:'Пользовательское соглашение', teaser:'Условия использования нейроинтерфейса «ЭрудитЛинк».',
+    relevant:true, body:`Соглашение содержит п. 7.3, согласно которому пользователь «выражает согласие на обработку данных активности устройства в целях улучшения сервиса». Понятие «нейроданные» в тексте отсутствует; согласие на их передачу третьим лицам и использование в рекламных целях прямо не выражено. <span class="law">ст. 9 ФЗ-152</span> требует конкретного, информированного и сознательного согласия.`,
+    note:'Соглашение не содержит конкретного согласия на передачу нейроданных — усиливает позицию истца.' },
+  { id:'logs', no:'Том I, л. 19', title:'Журналы передачи данных', teaser:'Технические логи серверов ответчика.',
+    relevant:true, body:`Логи фиксируют 1 247 сеансов выгрузки массивов нейрофизиологических показателей (паттерны внимания, эмоциональные реакции) на серверы рекламного партнёра. Передача осуществлялась без деперсонализации, с привязкой к идентификатору пользователя.`,
+    note:'Документально подтверждённый факт распространения данных — ключевое доказательство.' },
+  { id:'expert', no:'Том II, л. 2', title:'Заключение судебно-технической экспертизы', teaser:'Анализ характера собранных данных.',
+    relevant:true, body:`Эксперт установил, что собираемые показатели позволяют идентифицировать субъекта и характеризуют его физиологические особенности, что по своей природе сближает их с <span class="law">биометрическими ПДн (ст. 11 ФЗ-152)</span>. Прямого законодательного отнесения нейроданных к самостоятельной категории не имеется.`,
+    note:'Экспертиза обосновывает применение режима биометрических данных по аналогии закона.' },
+  { id:'contract', no:'Том II, л. 33', title:'Договор с рекламным партнёром', teaser:'Соглашение ответчика с третьим лицом.',
+    relevant:true, body:`Договор предусматривает возмездную передачу «обезличенных поведенческих профилей». Сопоставление с журналами (Том I, л. 19) показывает, что обезличивание фактически не производилось, данные передавались с идентификаторами.`,
+    note:'Опровергает довод ответчика об обезличивании — данные оставались персональными.' },
+  { id:'medcard', no:'Том III, л. 8', title:'Медицинская карта истца', teaser:'Сведения о состоянии здоровья.',
+    relevant:false, body:`Содержит общие сведения о состоянии здоровья истца за предшествующий период. Прямой причинно-следственной связи с предметом иска не усматривается; относимость <span class="law">(ст. 59 ГПК РФ)</span> сомнительна, существует риск необоснованного раскрытия врачебной тайны.`,
+    note:'Документ малорелевантен и сопряжён с риском раскрытия врачебной тайны — приобщать нецелесообразно.' },
+  { id:'ads', no:'Том III, л. 21', title:'Скриншоты таргетированной рекламы', teaser:'Реклама, демонстрировавшаяся истцу.',
+    relevant:true, body:`Скриншоты фиксируют рекламные объявления, тематически совпадающие с эмоциональными состояниями истца в конкретные периоды. Подтверждают использование нейроданных в коммерческих целях и причинение нравственных страданий <span class="law">(ст. 151 ГК РФ)</span>.`,
+    note:'Связывает обработку данных с конкретным вредом — основание компенсации морального вреда.' }
+];
+
+const NORMS = [
+  { id:'k23', nm:'ст. 23 Конституции РФ', ds:'Право на неприкосновенность частной жизни, личную тайну.', weight:6, correct:true,
+    fb:'Верно. Конституционная основа защиты приватности нейроданных.' },
+  { id:'k24', nm:'ст. 24 Конституции РФ', ds:'Запрет сбора и использования информации о частной жизни без согласия.', weight:6, correct:true,
+    fb:'Верно. Прямо запрещает обработку без согласия субъекта.' },
+  { id:'fz152', nm:'ФЗ № 152-ФЗ «О персональных данных»', ds:'Режим обработки, в т.ч. биометрических данных (ст. 9, 11).', weight:8, correct:true,
+    fb:'Верно. Центральная норма: согласие, обезличивание, биометрия.' },
+  { id:'gk1522', nm:'ст. 152.2 ГК РФ', ds:'Охрана частной жизни гражданина.', weight:6, correct:true,
+    fb:'Верно. Гражданско-правовая охрана частной жизни.' },
+  { id:'gk1064', nm:'ст. 1064 ГК РФ', ds:'Общие основания ответственности за причинение вреда.', weight:5, correct:true,
+    fb:'Верно. Деликтное основание.' },
+  { id:'gk151', nm:'ст. 151 ГК РФ', ds:'Компенсация морального вреда.', weight:5, correct:true,
+    fb:'Верно. Обоснование требования о компенсации.' },
+  { id:'uk137', nm:'ст. 137 УК РФ', ds:'Нарушение неприкосновенности частной жизни (уголовная).', weight:0, correct:'debate',
+    fb:'Спорно. Уголовно-правовая квалификация в гражданском иске избыточна и преждевременна — самостоятельной убедительности позиции не добавляет.' },
+  { id:'zpp', nm:'Закон РФ «О защите прав потребителей»', ds:'Отношения по оказанию услуг.', weight:0, correct:'debate',
+    fb:'Спорно. Применимо к качеству услуги, но не к существу нарушения тайны частной жизни.' },
+  { id:'uk222', nm:'ст. 222 УК РФ', ds:'Незаконный оборот оружия.', weight:-6, correct:false,
+    fb:'Ошибка. Норма не имеет ни малейшего отношения к предмету спора; ссылка подрывает убеждение суда о профессионализме представителя Истца.' }
+];
+
+const TRIAL = [
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Нейроданные не отнесены законом к биометрическим персональным данным. Поскольку самостоятельной категории не существует, режим Федерального закона № 152-ФЗ к ним неприменим, а значит нарушения нет.',
+    options:[
+      { t:'Согласиться, что специальной нормы нет, и ходатайствовать о применении аналогии закона: нейроданные идентифицируют субъекта и характеризуют его физиологию, что соответствует признакам биометрических данных (ст. 11 ФЗ-152).',
+        q:1, vl:'Юридически корректное преодоление пробела через ст. 6 ГК РФ.' },
+      { t:'Заявить, что отсутствие специальной нормы означает полный запрет любой обработки нейроданных.',
+        q:0, vl:'Чрезмерное и необоснованное утверждение; правом не подкреплено.' },
+      { t:'Настаивать, что данные являются биометрическими, не приводя обоснования их природы.',
+        q:.5, vl:'Тезис верный по существу, но голословный без ссылки на экспертизу.' }
+    ]
+  },
+  {
+    who:'Председательствующий', role:'judge', av:'С',
+    line:'Представитель истца, ответчик ссылается на пункт 7.3 пользовательского соглашения как на полученное согласие. Чем вы опровергаете наличие согласия на обработку?',
+    options:[
+      { t:'Согласие по п. 7.3 не является конкретным и информированным (ст. 9 ФЗ-152): термин «нейроданные» в тексте отсутствует, передача третьим лицам и использование в рекламе прямо не охватываются.',
+        q:1, vl:'Точное применение требований к юридической силе согласия.' },
+      { t:'Истец не читал соглашение, следовательно оно его не связывает.',
+        q:0, vl:'Несостоятельно, так как непрочтение соглашения не влияет на его юридическую силу.' },
+      { t:'Согласие отозвано истцом, поэтому обсуждать его содержание не требуется.',
+        q:.5, vl:'Отзыв согласия значим, но не отвечает на вопрос о его изначальной действительности.' }
+    ]
+  },
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Даже если данные обрабатывались, они передавались партнёру в обезличенном виде, в форме поведенческих профилей, а потому персональными более не являлись.',
+    options:[
+      { t:'Журналы передачи (Том I, л. 19) и договор (Том II, л. 33) подтверждают: данные выгружались с привязкой к идентификатору пользователя — фактического обезличивания не производилось.',
+        q:1, vl:'Опора на приобщённые доказательства опровергает довод фактически.' },
+      { t:'Обезличивание в принципе технически невозможно, поэтому довод ложен.',
+        q:.5, vl:'Декларативное утверждение и технически неточно; убедительнее опираться на материалы дела.' },
+      { t:'Вопрос обезличивания не имеет правового значения для дела.',
+        q:0, vl:'Ошибочно: именно обезличивание определяет режим данных.' }
+    ]
+  },
+  {
+    who:'Председательствующий', role:'judge', av:'С',
+    line:'Чем обосновано требование о компенсации морального вреда? Суд должен видеть причинно-следственную связь между нарушением и страданиями истца.',
+    options:[
+      { t:'Скриншоты таргетированной рекламы (Том III, л. 21) соотносятся с эмоциональными состояниями истца; неправомерное использование нейроданных причинило нравственные страдания (ст. 151, 1064 ГК РФ).',
+        q:1, vl:'Связь нарушения, вреда и нормы выстроена логически полно.' },
+      { t:'Моральный вред презюмируется при любом нарушении и доказывания не требует.',
+        q:.5, vl:'Презумпция применяется ограниченно; связь всё же надлежит обосновать.' },
+      { t:'Размер компенсации следует определить максимальным ввиду тяжести нарушения.',
+        q:0, vl:'Преждевременно и немотивированно; не отвечает на вопрос о связи.' }
+    ]
+  },
+  {
+    who:'Представитель ответчика', role:'opp', av:'О',
+    line:'Технологии нейроинтерфейсов служат общественному благу. Удовлетворение иска создаст препятствия для инноваций в Российской Федерации.',
+    options:[
+      { t:'Защита прав человека и развитие технологий не противопоставлены: правомерная обработка на основе действительного согласия закону не противоречит. Предметом спора является нарушение, а не технология как таковая.',
+        q:1, vl:'Снимает ложную дихотомию, возвращая суд к существу спора.' },
+      { t:'Интересы инноваций не подлежат учёту при защите конституционных прав.',
+        q:.5, vl:'Верно по приоритету, но категоричность ослабляет взвешенность позиции.' },
+      { t:'Развитие технологий действительно важнее, и иск стоит ограничить.',
+        q:0, vl:'Уступка, противоречащая интересам доверителя.' }
+    ]
+  }
+];
+
+/* =========================================================
+   ЭКРАНЫ
+========================================================= */
+function render(html){ app.innerHTML=`<div class="sheet stage">${html}</div>`; window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ----- Титульный экран ----- */
+function screenTitle(){
+  topbar.style.visibility='hidden';
+  render(`
+    <div class="title-screen">
+      <div class="phase-tag" style="justify-content:center;border:none">Российская Федерация · суд первой инстанции</div>
+      <div class="grand">Дело о нейроданных<em>Гражданка Паничева против ООО «НейроМир»</em></div>
+      <div class="filigree"><i></i>
+        <svg width="26" height="26" viewBox="0 0 100 100"><g stroke="#4a1418" stroke-width="4" fill="none" stroke-linecap="round"><line x1="50" y1="20" x2="50" y2="74"/><line x1="26" y1="34" x2="74" y2="34"/><line x1="50" y1="74" x2="40" y2="84"/><line x1="50" y1="74" x2="60" y2="84"/></g></svg>
+        <i></i></div>
+      <div class="title-note">Обучающий интерактивный материал для слушателей Летней школы МГИМО «Цифровая трансформация правового пространства ЕАЭС» 
+ подготовлен доц. Е.К. Матевосовой</div>
+      <p class="lead">Вы — представитель истца. Вашему доверителю предстоит первый в практике процесс о незаконном использовании нейрофизиологических данных, собранных нейроинтерфейсом.</p>
+      <p class="small">Изучите материалы дела, дайте им верную правовую квалификацию и проведите судебные прения. От убедительности вашей правовой позиции зависит исход дела.</p>
+      <div class="actions" style="justify-content:center">
+        <button class="btn btn-primary" id="bStart">Принять поручение </button>
+        <button class="btn btn-ghost" id="bAbout">О правилах</button>
+      </div>
+      <div class="title-date">2 июля 2026 года</div>
+    </div>`);
+  document.getElementById('bStart').onclick=screenBriefing;
+  document.getElementById('bAbout').onclick=()=>openModal(`
+    <div class="mtag">Регламент игры</div>
+    <h3>Как ведётся процесс</h3>
+    <p style="font-size:16px">Игра проходит в четыре стадии: <b>изучение материалов</b>, <b>правовая квалификация</b>, <b>судебные прения</b> и <b>вынесение решения</b>.</p>
+    <ul class="clean">
+      <li>Шкала вверху отражает <b>убедительность вашей позиции</b> (0–100).</li>
+      <li>Приобщайте к делу относимые доказательства и отклоняйте сомнительные.</li>
+      <li>Выбирайте применимые нормы права; ошибочные ссылки ослабляют позицию.</li>
+      <li>В прениях подбирайте процессуально корректные и обоснованные ответы.</li>
+    </ul>
+    <div class="actions"><button class="btn btn-primary" onclick="closeModal()">Понятно</button></div>`);
+}
+
+/* ----- Брифинг ----- */
+function screenBriefing(){
+  State.phase='briefing';
+  topbar.style.visibility='visible';
+  render(`
+    <div class="phase-tag">Стадия I · Ознакомление с делом <span>Том I–III</span></div>
+    <h2>Фабула дела</h2>
+    <p class="lead">Гражданка Паничева на протяжении года пользовалась нейроинтерфейсом «ЭрудитЛинк» производства ООО «НейроМир».</p>
+    <p><span class="drop">У</span>стройство непрерывно фиксировало нейрофизиологические показатели пользователя: паттерны внимания, эмоциональные реакции, утомляемость. Истец полагает, что ответчик собирал эти сведения и передавал их рекламному партнёру в коммерческих целях без её действительного согласия, чем нарушил неприкосновенность её частной жизни.</p>
+    <p>Ответчик возражает, ссылаясь на пользовательское соглашение и утверждая, что нейроданные не отнесены законом к охраняемым категориям, а передаваемые сведения были обезличены.</p>
+    <hr class="rule">
+    <h3>Предмет иска</h3>
+    <ul class="clean">
+      <li>Признание обработки нейроданных истца незаконной.</li>
+      <li>Прекращение обработки и удаление собранных данных.</li>
+      <li>Компенсация морального вреда.</li>
+    </ul>
+    <p class="small">Ваша задача как представителя истца — собрать доказательственную базу и сформировать правовую позицию.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="go">Перейти к изучению материалов дела</button>
+      <button class="btn btn-ghost" id="back">Вернуться к титулу</button>
+    </div>`);
+  document.getElementById('go').onclick=screenEvidence;
+  document.getElementById('back').onclick=screenTitle;
+}
+
+/* ----- Доказательства ----- */
+function screenEvidence(){
+  State.phase='evidence';
+  const cards=EVIDENCE.map(e=>{
+    const cls=['ev'];
+    if(State.examined.has(e.id)) cls.push('seen');
+    if(State.admitted.has(e.id)) cls.push('admitted');
+    if(State.rejected.has(e.id)) cls.push('rejected');
+    const stamp = State.admitted.has(e.id)?'Приобщено':State.rejected.has(e.id)?'Отклонено':'';
+    return `<button class="${cls.join(' ')}" data-id="${e.id}">
+        <span class="stamp">${stamp}</span>
+        <div class="no">${e.no}</div>
+        <h4>${e.title}</h4><p>${e.teaser}</p>
+      </button>`;
+  }).join('');
+  render(`
+    <div class="phase-tag">Стадия II · Исследование доказательств <span id="cnt"></span></div>
+    <h2>Материалы дела</h2>
+    <p>Изучите каждый документ. По относимым доказательствам <span class="law">(ст. 59 ГПК РФ)</span> заявляйте ходатайство о приобщении к делу; сомнительные — отклоняйте. Проанализируйте соответствующие документы, чтобы перейти далее.</p>
+    <div class="grid">${cards}</div>
+    <div class="actions">
+      <button class="btn btn-primary" id="next">Перейти к правовой квалификации</button>
+      <span class="small" id="hint"></span>
+    </div>`);
+  document.querySelectorAll('.ev').forEach(b=>b.onclick=()=>evidenceModal(b.dataset.id));
+  updEvidence();
+}
+function updEvidence(){
+  const cnt=document.getElementById('cnt');
+  if(cnt) cnt.textContent=`Осмотрено: ${State.examined.size} из ${EVIDENCE.length}`;
+  const next=document.getElementById('next');
+  const hint=document.getElementById('hint');
+  const ready=State.examined.size>=4;
+  if(next){ next.disabled=!ready; }
+  if(hint) hint.textContent = '';
+  if(next) next.onclick=ready?screenQualification:null;
+}
+function evidenceModal(id){
+  const e=EVIDENCE.find(x=>x.id===id);
+  const firstSeen=!State.examined.has(id);
+  State.examined.add(id);
+  const decided = State.admitted.has(id)||State.rejected.has(id);
+  openModal(`
+    <div class="mtag">${e.no} · вещественное доказательство</div>
+    <h3>${e.title}</h3>
+    <p style="font-size:16px">${e.body}</p>
+    ${decided?`<p class="small"><i>Решение по документу уже принято.</i></p>`:''}
+    <div class="actions">
+      <button class="btn btn-primary" id="adm" ${decided?'disabled':''}>Заявить ходатайство о приобщении</button>
+      <button class="btn btn-ghost" id="rej" ${decided?'disabled':''}>Отклонить документ</button>
+      <button class="btn btn-ghost" id="cls">Закрыть</button>
+    </div>`);
+  document.getElementById('cls').onclick=()=>{closeModal();screenEvidence();};
+  const adm=document.getElementById('adm'), rej=document.getElementById('rej');
+  if(adm) adm.onclick=()=>{
+    State.admitted.add(id);State.rejected.delete(id);
+    if(e.relevant){ setScore(+4); toast('Доказательство приобщено. '+e.note,7000); addLog('Приобщено: '+e.title); }
+    else { setScore(-3); toast('Документ приобщён, но он малорелевантен. '+e.note,7000); }
+    closeModal();screenEvidence();
+  };
+  if(rej) rej.onclick=()=>{
+    State.rejected.add(id);State.admitted.delete(id);
+    if(!e.relevant){ setScore(+3); toast('Верно. '+e.note,7000); addLog('Обоснованно отклонено: '+e.title); }
+    else { setScore(-4); toast('Вы отклонили относимое доказательство — позиция ослаблена.',7000); }
+    closeModal();screenEvidence();
+  };
+}
+
+/* ----- Квалификация ----- */
+function screenQualification(){
+  State.phase='qualification';
+  const list=NORMS.map(n=>`
+    <div class="norm ${State.norms.has(n.id)?'on':''}" data-id="${n.id}">
+      <div class="box">✓</div>
+      <div><div class="nm">${n.nm}</div><div class="ds">${n.ds}</div></div>
+    </div>`).join('');
+  render(`
+    <div class="phase-tag">Стадия III · Правовая квалификация <span>выбор норм</span></div>
+    <h2>Правовое основание иска</h2>
+    <p>Отметьте нормы права, на которых основывается позиция истца. Точная квалификация укрепляет позицию; ошибочные ссылки её ослабляют. Затем сформируйте правовую позицию.</p>
+    ${list}
+    <div class="actions">
+      <button class="btn btn-primary" id="form">Сформировать правовую позицию</button>
+      <button class="btn btn-ghost" id="back">Назад к материалам</button>
+    </div>`);
+  document.querySelectorAll('.norm').forEach(el=>el.onclick=()=>{
+    const id=el.dataset.id;
+    if(State.norms.has(id)){State.norms.delete(id);el.classList.remove('on');}
+    else{State.norms.add(id);el.classList.add('on');}
+  });
+  document.getElementById('back').onclick=screenEvidence;
+  document.getElementById('form').onclick=evaluateQualification;
+}
+function evaluateQualification(){
+  if(State.norms.size===0){ toast('Необходимо избрать хотя бы одну норму права.'); return; }
+  let delta=0; const lines=[];
+  NORMS.forEach(n=>{
+    if(State.norms.has(n.id)){
+      delta+=n.weight;
+      const tag = n.correct===true?'win':n.correct==='debate'?'part':'loss';
+      lines.push(`<div class="opt ${tag}" style="cursor:default">
+        <b>${n.nm}</b><span class="verdict-line">${n.fb}</span></div>`);
+    }
+  });
+  setScore(delta);
+  State.qualificationDone=true;
+  addLog('Правовая позиция сформирована.');
+  render(`
+    <div class="phase-tag">Стадия III · Оценка квалификации <span>${delta>=0?'+':''}${delta} к убедительности</span></div>
+    <h2>Заключение по правовой позиции</h2>
+    <p>Суд оценит избранную вами совокупность норм следующим образом:</p>
+    ${lines.join('')}
+    <p class="small">Совет: ядро позиции по делам о приватности нейроданных образуют конституционные гарантии, режим персональных данных и гражданско-правовая охрана частной жизни.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="trial">Перейти к судебным прениям</button>
+      <button class="btn btn-ghost" id="redo">Пересмотреть квалификацию</button>
+    </div>`);
+  document.getElementById('trial').onclick=()=>{State.trialRound=0;State.trialAnswered=false;screenTrial();};
+  document.getElementById('redo').onclick=screenQualification;
+}
+
+/* ----- Прения ----- */
+function screenTrial(){
+  State.phase='trial';
+  const r=TRIAL[State.trialRound];
+  State.trialAnswered=false;
+  const opts=r.options.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join('');
+  render(`
+    <div class="phase-tag">Стадия IV · Судебные прения <span>Эпизод ${State.trialRound+1} из ${TRIAL.length}</span></div>
+    <div class="speaker">
+      <div class="badge ${r.role==='judge'?'judge':''}">${r.av}</div>
+      <div class="who">${r.role==='judge'?'Председательствующий':'Сторона ответчика'}<b>${r.who}</b></div>
+    </div>
+    <div class="quote">«${r.line}»</div>
+    <p class="small">Изберите процессуально корректный и юридически обоснованный ответ:</p>
+    <div id="opts">${opts}</div>
+    <div class="actions" id="trialAct"></div>`);
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answerTrial(parseInt(b.dataset.i)));
+}
+function answerTrial(i){
+  if(State.trialAnswered) return;
+  State.trialAnswered=true;
+  const r=TRIAL[State.trialRound];
+  const opt=r.options[i];
+  const delta = opt.q===1?10:opt.q===.5?4:-5;
+  setScore(delta);
+  const buttons=document.querySelectorAll('.opt');
+  buttons.forEach((b,idx)=>{
+    b.disabled=true;
+    const q=r.options[idx].q;
+    if(idx===i){
+      b.classList.add(q===1?'good':q===.5?'mid':'bad');
+      b.innerHTML+=`<span class="verdict-line">${r.options[idx].vl}</span>`;
+    } else if(q===1){
+      b.classList.add('good');
+      b.innerHTML+=`<span class="verdict-line">Наиболее сильный ответ: ${r.options[idx].vl}</span>`;
+    }
+  });
+  const last = State.trialRound>=TRIAL.length-1;
+  document.getElementById('trialAct').innerHTML=
+    `<button class="btn btn-primary" id="cont">${last?'Перейти к вынесению решения':'Следующий эпизод прений'}</button>
+     <span class="small">${delta>=10?'Возражение принято судом.':delta>0?'Ответ принят, но мог быть сильнее.':'Ответ ослабил позицию.'}</span>`;
+  document.getElementById('cont').onclick=()=>{
+    if(last){ screenVerdict(); }
+    else { State.trialRound++; screenTrial(); }
+  };
+  addLog(`Прения, эпизод ${State.trialRound+1}: ${delta>=0?'+':''}${delta}.`);
+}
+
+/* ----- Решение ----- */
+function screenVerdict(){
+  State.phase='verdict';
+  const s=State.score;
+  let cls,title,body;
+  if(s>=80){
+    cls='win';title='Иск удовлетворить в полном объёме';
+    body=`Суд признал обработку нейроданных истца незаконной, обязал ответчика прекратить обработку и удалить собранные сведения, а также взыскал компенсацию морального вреда в заявленном размере. Ваша правовая позиция оказалась безупречной: доказательственная база полна, квалификация точна, возражения ответчика отклонены.`;
+  } else if(s>=60){
+    cls='part';title='Иск удовлетворить частично';
+    body=`Суд признал нарушение и обязал ответчика прекратить обработку данных, однако размер компенсации морального вреда снижен. Позиция была убедительной, но отдельные доводы суд счёл недостаточно обоснованными.`;
+  } else if(s>=40){
+    cls='part';title='Иск удовлетворить в части неимущественных требований';
+    body=`Суд установил факт нарушения и обязал удалить данные, но во взыскании компенсации отказал ввиду недоказанности причинно-следственной связи. Доказательственная работа и квалификация требовали большей тщательности.`;
+  } else {
+    cls='loss';title='В удовлетворении иска отказать';
+    body=`Суд счёл доводы истца недостаточно обоснованными, а доказательственную базу — неполной. Слабая квалификация и процессуальные неточности не позволили опровергнуть возражения ответчика.`;
+  }
+  const pills=State.log.slice(-8).map(l=>`<span class="pill">${l}</span>`).join('');
+  render(`
+    <div class="phase-tag">Резолютивная часть · оглашение решения <span>убедительность: ${s}/100</span></div>
+    <div class="gavel-wrap">
+      <svg width="70" height="70" viewBox="0 0 100 100" aria-hidden="true">
+        <g stroke="#4a1418" stroke-width="5" stroke-linecap="round" fill="none">
+          <rect x="38" y="16" width="34" height="20" rx="3" transform="rotate(38 55 26)" fill="rgba(74,20,24,.1)"/>
+          <line x1="50" y1="34" x2="26" y2="64"/>
+          <line x1="20" y1="78" x2="54" y2="78"/>
+        </g>
+      </svg>
+    </div>
+    <div class="outcome ${cls}">${title}</div>
+    <div class="scorebox">Итоговая убедительность позиции — ${s} из 100</div>
+    <p>${body}</p>
+    <hr class="rule">
+    <h3>Процессуальный итог</h3>
+    <p class="small">Ключевые процессуальные действия по делу:</p>
+    <div class="pillrow">${pills||'<span class="pill">нет записей</span>'}</div>
+    <div class="actions">
+      <button class="btn btn-primary" id="again">Рассмотреть дело заново</button>
+      <button class="btn btn-ghost" id="why">Методический комментарий</button>
+    </div>`);
+  document.getElementById('again').onclick=resetGame;
+  document.getElementById('why').onclick=()=>openModal(`
+    <div class="mtag">Методический комментарий</div>
+    <h3>Правовой контекст дела</h3>
+    <p style="font-size:16px">На момент рассмотрения российское законодательство не выделяет нейроданные в самостоятельную категорию. Это образует <b>правовой пробел</b>, преодолеваемый через аналогию закона (ст. 6 ГК РФ): по своим признакам нейроданные сближаются с биометрическими персональными данными.</p>
+    <p style="font-size:16px">Опорой защиты служат конституционные гарантии приватности <span class="law">(ст. 23, 24)</span>, режим персональных данных <span class="law">(ФЗ-152)</span> и гражданско-правовая охрана частной жизни <span class="law">(ст. 152.2 ГК РФ)</span>.</p>
+    <div class="actions"><button class="btn btn-primary" onclick="closeModal()">Закрыть</button></div>`);
+}
+
+/* ----- Сброс ----- */
+function resetGame(){
+  State.score=50;State.examined=new Set();State.admitted=new Set();State.rejected=new Set();
+  State.norms=new Set();State.qualificationDone=false;State.trialRound=0;State.trialAnswered=false;State.log=[];
+  setScore(0);
+  screenTitle();
+}
+
+/* запуск */
+setScore(0);
+screenTitle();
+</script>
+<script>
+/* ===== Нейро-фон: окружает документ в багровом поле ===== */
+(function(){
+  const cv = document.getElementById('neuroField');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const TAU = Math.PI*2;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,DPR=1,nodes=[],pulses=[],waves=[],raf=0,t=0;
+  const rand=(a,b)=>a+Math.random()*(b-a);
+
+  /* предрендер свечения (спрайты) — быстро и мягко */
+  function makeGlow(rgb){
+    const c=document.createElement('canvas');c.width=c.height=64;
+    const g=c.getContext('2d');
+    const rg=g.createRadialGradient(32,32,0,32,32,32);
+    rg.addColorStop(0,'rgba('+rgb+',1)');
+    rg.addColorStop(0.45,'rgba('+rgb+',0.45)');
+    rg.addColorStop(1,'rgba('+rgb+',0)');
+    g.fillStyle=rg;g.fillRect(0,0,64,64);
+    return c;
+  }
+  const glowAmber = makeGlow('230,200,120');
+  const glowCream = makeGlow('246,230,176');
+
+  const LINK = 132;
+
+  function build(){
+    const count = Math.max(46, Math.min(120, Math.round(W*H/13000)));
+    nodes=[];
+    for(let i=0;i<count;i++){
+      nodes.push({x:rand(0,W),y:rand(0,H),
+        vx:rand(-0.10,0.10),vy:rand(-0.10,0.10),
+        r:rand(0.8,2.0),hub:Math.random()<0.07,ph:rand(0,TAU)});
+    }
+    pulses=[];
+    waves=[
+      {y:H*0.085,amp:9, k:0.018,sp:0.6, ph:0},
+      {y:H*0.93, amp:11,k:0.014,sp:-0.45,ph:2}
+    ];
+  }
+  function resize(){
+    DPR=Math.min(2,window.devicePixelRatio||1);
+    W=window.innerWidth;H=window.innerHeight;
+    cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+    cv.style.width=W+'px';cv.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+    if(reduce) draw(true);
+  }
+  function spawnPulse(){
+    if(pulses.length>22) return;
+    const a=nodes[(Math.random()*nodes.length)|0];
+    let best=null,bd=LINK;
+    for(const b of nodes){
+      if(b===a) continue;
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<bd){best=b;bd=d;if(Math.random()<0.5)break;}
+    }
+    if(best) pulses.push({a,b:best,t:0,sp:rand(0.006,0.015)});
+  }
+  function draw(stat){
+    ctx.clearRect(0,0,W,H);
+
+    /* ЭЭГ-трассы сверху и снизу */
+    for(const w of waves){
+      ctx.beginPath();
+      for(let x=0;x<=W;x+=6){
+        const y=w.y+Math.sin(x*w.k+t*0.02*w.sp+w.ph)*w.amp
+                   +Math.sin(x*w.k*2.7+t*0.03*w.sp)*w.amp*0.35;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.lineWidth=1;ctx.strokeStyle='rgba(201,162,75,0.15)';ctx.stroke();
+    }
+
+    /* синаптические связи */
+    ctx.lineWidth=0.7;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j];
+        const dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+        if(d2<LINK*LINK){
+          const al=(1-Math.sqrt(d2)/LINK)*0.16;
+          ctx.strokeStyle='rgba(214,178,96,'+al.toFixed(3)+')';
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+    }
+
+    /* импульсы вдоль связей */
+    for(let i=pulses.length-1;i>=0;i--){
+      const p=pulses[i];p.t+=stat?0:p.sp;
+      if(p.t>=1){pulses.splice(i,1);continue;}
+      const x=p.a.x+(p.b.x-p.a.x)*p.t, y=p.a.y+(p.b.y-p.a.y)*p.t;
+      ctx.globalAlpha=0.85*Math.sin(p.t*Math.PI);
+      ctx.drawImage(glowCream,x-9,y-9,18,18);
+      ctx.globalAlpha=1;
+    }
+
+    /* нейроны */
+    for(const n of nodes){
+      const pul=stat?0:(Math.sin(t*0.03+n.ph)*0.5+0.5);
+      const r=n.r+(n.hub?1.4:0);
+      const a=0.30+pul*0.32+(n.hub?0.15:0);
+      const s=(r*4+4);
+      ctx.globalAlpha=a;
+      ctx.drawImage(glowAmber,n.x-s,n.y-s,s*2,s*2);
+      ctx.globalAlpha=1;
+      ctx.fillStyle='rgba(246,232,184,'+Math.min(0.9,a+0.3).toFixed(3)+')';
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,TAU);ctx.fill();
+      if(n.hub){
+        ctx.strokeStyle='rgba(201,162,75,0.45)';ctx.lineWidth=0.8;
+        ctx.beginPath();ctx.arc(n.x,n.y,r*3.2,0,TAU);ctx.stroke();
+      }
+    }
+  }
+  function step(){
+    t++;
+    for(const n of nodes){
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<-20)n.x=W+20;else if(n.x>W+20)n.x=-20;
+      if(n.y<-20)n.y=H+20;else if(n.y>H+20)n.y=-20;
+    }
+    if(t%26===0) spawnPulse();
+    draw(false);
+    raf=requestAnimationFrame(step);
+  }
+  resize();
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();if(!reduce)step();},{passive:true});
+  if(!reduce) step();
+})();
+</script>
+</body>
+</html>
